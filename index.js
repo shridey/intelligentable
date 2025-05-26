@@ -1,3 +1,3 @@
-import IntelligentTable from "./src/Components/SmartTable/IntelligentTable";
+import IntelligentTable from "./src/Components/IntelligentTable/IntelligentTable";
 
 export { IntelligentTable };

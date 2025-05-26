@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { intelligentTablePropTypes } from "@/Common/propTypes";
+import { intelligentTablePropTypes } from "../../utilities/propTypes";
 import { Table, Tooltip, Button, message } from "antd";
 import { InfoCircleOutlined, CopyOutlined } from "@ant-design/icons";
 import styles from "./IntelligentTable.module.css";
