@@ -1,0 +1,42 @@
+{
+  "name": "intelligentable",
+  "version": "1.0.0",
+  "description": "An Intelligent Table component for React powered by Ant Design.",
+  "main": "dist/intelligentable.es.js",
+  "module": "dist/intelligentable.es.js",
+  "files": [
+    "dist",
+    "src",
+    "index.js"
+  ],
+  "scripts": {
+    "build": "vite build"
+  },
+  "peerDependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "antd": "^5.25.3",
+    "@ant-design/icons": "^6.0.0"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5",
+    "@vitejs/plugin-react": "^4.5.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "antd": "^5.25.3",
+    "@ant-design/icons": "^6.0.0"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "keywords": [
+    "react",
+    "component",
+    "antd",
+    "table",
+    "css-modules",
+    "vite"
+  ],
+  "author": "Shridhar Pandey",
+  "license": "MIT"
+}

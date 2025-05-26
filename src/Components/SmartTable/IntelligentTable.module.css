@@ -1,0 +1,9 @@
+.custom-table {
+  :global(.ant-table-column-sorter) {
+    color: var(--text-color);
+  }
+
+  :global(.ant-table-cell.ant-table-cell-scrollbar) {
+    background-color: var(--background-color);
+  }
+}
