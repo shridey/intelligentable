@@ -1,12 +1,20 @@
 {
-  "name": "intelligentable",
+  "name": "@shridey/intelligentable",
   "version": "1.0.0",
   "description": "An Intelligent Table component for React powered by Ant Design.",
-  "main": "dist/intelligentable.es.js",
+  "main": "dist/intelligentable.umd.js",
   "module": "dist/intelligentable.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/intelligentable.es.js",
+      "require": "./dist/intelligentable.umd.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "dist",
-    "src",
     "index.js"
   ],
   "scripts": {
@@ -37,6 +45,6 @@
     "css-modules",
     "vite"
   ],
-  "author": "Shridhar Pandey",
+  "author": "Shridhar Pandey <shridharpandeyofficial@gmail.com>",
   "license": "MIT"
 }

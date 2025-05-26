@@ -7,8 +7,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, "index.js"),
-      name: "IntelligentTable",
-      fileName: (format) => `IntelligentTable.${format}.js`,
+      name: "IntelligentUI", // UMD global name (change if you want)
+      fileName: (format) => `intelligentable.${format}.js`, // consistent naming
     },
     rollupOptions: {
       external: ["react", "react-dom", "antd", "@ant-design/icons"],
