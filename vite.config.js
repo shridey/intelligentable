@@ -11,13 +11,20 @@ export default defineConfig({
       fileName: (format) => `intelligentable.${format}.js`, // consistent naming
     },
     rollupOptions: {
-      external: ["react", "react-dom", "antd", "@ant-design/icons"],
+      external: [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "antd",
+        "@ant-design/icons",
+      ],
       output: {
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
           antd: "antd",
           "@ant-design/icons": "icons",
+          "react-router-dom": "ReactRouterDOM",
         },
       },
     },
