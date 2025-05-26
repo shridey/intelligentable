@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 export const intelligentTableColumnColorsArray = PropTypes.arrayOf(
   PropTypes.shape({
     min: PropTypes.number,
