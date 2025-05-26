@@ -1,6 +1,6 @@
 {
   "name": "@shridey/intelligentable",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "An Intelligent Table component for React powered by Ant Design.",
   "main": "dist/intelligentable.umd.js",
   "module": "dist/intelligentable.es.js",
