@@ -15,7 +15,8 @@
   },
   "files": [
     "dist",
-    "index.js"
+    "index.js",
+    "README.md"
   ],
   "scripts": {
     "build": "vite build"
