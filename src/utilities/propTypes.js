@@ -1,11 +1,17 @@
 import PropTypes from "prop-types";
 
 export const intelligentTableColumnColorsArray = PropTypes.arrayOf(
-  PropTypes.shape({
-    min: PropTypes.number,
-    max: PropTypes.number,
-    color: PropTypes.string,
-  })
+  PropTypes.oneOfType([
+    PropTypes.shape({
+      min: PropTypes.number,
+      max: PropTypes.number,
+      color: PropTypes.string.isRequired,
+    }),
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      color: PropTypes.string.isRequired,
+    }),
+  ])
 );
 
 export const intelligentTableColumnFiltersArray = PropTypes.arrayOf(
@@ -30,12 +36,14 @@ export const intelligentTableColumnsArray = PropTypes.arrayOf(
 export const intelligentTablePropTypes = {
   columns: intelligentTableColumnsArray,
   data: PropTypes.arrayOf(PropTypes.object),
-  loading: PropTypes.bool,
-  pagination: PropTypes.bool,
-  enableLegends: PropTypes.bool,
+  schoolName: PropTypes.string,
   summaryTitle: PropTypes.string,
   instructions: PropTypes.string,
-  scrollY: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  darkMode: PropTypes.bool,
+  loading: PropTypes.bool,
+  pagination: PropTypes.bool,
+  stickyHeader: PropTypes.bool,
+  enableLegends: PropTypes.bool,
+  enableSummary: PropTypes.bool,
+  enableScroll: PropTypes.bool,
   enableCopy: PropTypes.bool,
 };

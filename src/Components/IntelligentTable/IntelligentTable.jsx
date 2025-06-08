@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { intelligentTablePropTypes } from "../../utilities/propTypes";
 import { Table, Tooltip, Button, message } from "antd";
@@ -20,12 +21,25 @@ const gradeOrder = {
   12: 12,
 };
 
+// Check if the value is a percentage string
+const isPercentString = (value) =>
+  typeof value === "string" && value.trim().endsWith("%");
+
+// Parse percentage string into number
+const parsePercent = (val) =>
+  isPercentString(val) ? parseFloat(val.replace("%", "")) : NaN;
+
 // Helper function to get color based on thresholds
 const getThresholdColor = (thresholds, value) => {
   if (!Array.isArray(thresholds) || isNaN(value)) return undefined;
   return thresholds.find(
     ({ min = -Infinity, max = Infinity }) => value >= min && value < max
   )?.color;
+};
+
+const getTextColor = (colorMap, val) => {
+  if (!Array.isArray(colorMap)) return undefined;
+  return colorMap.find((entry) => entry.value === val)?.color;
 };
 
 // Get sorter function based on column type
@@ -79,7 +93,7 @@ const getSorter = (col) => {
 };
 
 // Apply color thresholds, sorting, and column enhancements
-const applyColumnEnhancements = (cols, darkMode) =>
+const applyColumnEnhancements = (cols, darkMode, schoolName) =>
   cols?.map((col) => {
     const hasChildren = Array.isArray(col.children) && col.children.length > 0;
     const shouldApplyColor = col.color && Array.isArray(col.color);
@@ -118,7 +132,7 @@ const applyColumnEnhancements = (cols, darkMode) =>
       }),
       onCell: () => ({
         style: {
-          padding: "6.6px",
+          padding: "6px",
           fontSize: "12px",
           color: "var(--text-color)",
           backgroundColor: "var(--chart-background)",
@@ -139,7 +153,7 @@ const applyColumnEnhancements = (cols, darkMode) =>
                 ? parsePercent(text)
                 : parseFloat(text);
               const color = shouldApplyColor
-                ? getColor(numericValue)
+                ? getColor(numericValue) || getTextColor(col.color, text)
                 : undefined;
 
               const handleClick = async (e) => {
@@ -188,7 +202,7 @@ const applyColumnEnhancements = (cols, darkMode) =>
                   {col.dataIndex === "studentName" ||
                   col.dataIndex === "studentId" ? (
                     <Link
-                      to={`/icps-clone/student-profiles/${record.studentId}`}
+                      to={`/${schoolName}/student-profiles/${record.studentId}`}
                       style={{
                         textDecoration: "underline",
                       }}
@@ -216,14 +230,6 @@ const flattenColumns = (columns) => {
     return acc;
   }, []);
 };
-
-// Check if the value is a percentage string
-const isPercentString = (value) =>
-  typeof value === "string" && value.trim().endsWith("%");
-
-// Parse percentage string into number
-const parsePercent = (val) =>
-  isPercentString(val) ? parseFloat(val.replace("%", "")) : NaN;
 
 // Compute summary values (sum, average, count)
 const computeSummaryValue = (data, dataIndex, operation) => {
@@ -364,17 +370,22 @@ const convertToTSV = (columns, data) => {
 const IntelligentTable = ({
   columns,
   data,
+  schoolName = "icps-clone",
+  summaryTitle,
+  instructions = "",
   loading = true,
   pagination = false,
-  enableLegends = false,
-  summaryTitle = "Total",
   skickyHeader = false,
-  instructions = "",
-  scrollY = 369,
-  darkMode = false,
+  enableLegends = false,
+  enableSummary = true,
   enableCopy = true,
+  darkMode = false,
 }) => {
-  const modifiedColumns = applyColumnEnhancements(columns, darkMode);
+  const modifiedColumns = applyColumnEnhancements(
+    columns,
+    darkMode,
+    schoolName
+  );
   const flatCols = flattenColumns(columns);
   const legends = extractLegends(columns);
 
@@ -383,52 +394,59 @@ const IntelligentTable = ({
     fontWeight: "bold",
     color: "var(--text-color)",
     backgroundColor: "var(--background-color)",
-    position: "sticky",
-    bottom: 0,
-    zIndex: 1,
   };
 
   const summary = (pageData) => (
-    <Table.Summary.Row style={summaryRowStyle}>
-      {flatCols?.map(({ dataIndex, operation }, index) => {
-        const content =
-          index === 0
-            ? summaryTitle
-            : computeSummaryValue(pageData, dataIndex, operation);
+    <Table.Summary fixed>
+      <Table.Summary.Row style={summaryRowStyle}>
+        {flatCols?.map(({ dataIndex, operation }, index) => {
+          const content =
+            index === 0
+              ? operation === "count"
+                ? `Count: ${computeSummaryValue(
+                    pageData,
+                    dataIndex,
+                    operation
+                  )}${summaryTitle ? ` | ${summaryTitle}` : ""}`
+                : summaryTitle
+                ? summaryTitle
+                : ""
+              : computeSummaryValue(pageData, dataIndex, operation);
 
-        const colorConfig = columns
-          .flatMap((c) => (c.children ? c.children : [c]))
-          .find((c) => c.dataIndex === dataIndex)?.color;
+          const colorConfig = columns
+            .flatMap((c) => (c.children ? c.children : [c]))
+            .find((c) => c.dataIndex === dataIndex)?.color;
 
-        const value = isPercentString(content)
-          ? parsePercent(content)
-          : parseFloat(content);
+          const value = isPercentString(content)
+            ? parsePercent(content)
+            : parseFloat(content);
 
-        const color =
-          colorConfig && !isNaN(value)
-            ? getThresholdColor(colorConfig, value)
-            : undefined;
+          const color =
+            colorConfig && !isNaN(value)
+              ? getThresholdColor(colorConfig, value)
+              : undefined;
 
-        return (
-          <Table.Summary.Cell key={dataIndex || index} align="center">
-            <div
-              style={{
-                lineHeight: "0.1",
+          return (
+            <Table.Summary.Cell key={dataIndex || index} align="center">
+              <div
+                style={{
+                  lineHeight: "0.1",
 
-                color: darkMode ? "var(--text-color)" : color,
-                textShadow:
-                  darkMode &&
-                  `-0.6px -0.6px 0px ${color}, 0.6px -0.6px 0px ${color}, -0.6px 0.6px 0px ${color}, 0.6px 0.6px 0px ${color}`,
-                whiteSpace: "nowrap",
-                textOverflow: "ellipsis",
-              }}
-            >
-              {content}
-            </div>
-          </Table.Summary.Cell>
-        );
-      })}
-    </Table.Summary.Row>
+                  color: darkMode ? "var(--text-color)" : color,
+                  textShadow:
+                    darkMode &&
+                    `-0.6px -0.6px 0px ${color}, 0.6px -0.6px 0px ${color}, -0.6px 0.6px 0px ${color}, 0.6px 0.6px 0px ${color}`,
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {content}
+              </div>
+            </Table.Summary.Cell>
+          );
+        })}
+      </Table.Summary.Row>
+    </Table.Summary>
   );
 
   const handleCopyToClipboard = async () => {
@@ -515,7 +533,13 @@ const IntelligentTable = ({
                     border: "1px solid #ccc",
                   }}
                 />
-                <span style={{ fontSize: "12px", color: "var(--text-color)" }}>
+                <span
+                  style={{
+                    fontSize: "12px",
+                    color: "var(--text-color)",
+                    fontWeight: "bold",
+                  }}
+                >
                   {label}
                 </span>
               </div>
@@ -526,9 +550,11 @@ const IntelligentTable = ({
           {instructions && (
             <div
               style={{
-                background: darkMode ? "#141414" : "#f0f0f0",
+                backgroundColor: "var(--background-color)",
                 color: "var(--text-color)",
-                padding: "5px 10px",
+                fontWeight: "bold",
+                border: "1px solid",
+                padding: "6px 10px",
                 fontSize: "12px",
                 borderRadius: "5px",
                 display: "flex",
@@ -546,7 +572,19 @@ const IntelligentTable = ({
               <Button
                 icon={<CopyOutlined />}
                 onClick={handleCopyToClipboard}
-                size="small"
+                style={{
+                  backgroundColor: "var(--background-color)",
+                  color: "var(--text-color)",
+                  fontWeight: "bold",
+                  border: "1px solid",
+                  padding: "5px 10px",
+                  fontSize: "12px",
+                  borderRadius: "5px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
               >
                 Copy
               </Button>
@@ -557,6 +595,15 @@ const IntelligentTable = ({
     );
   };
 
+  const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalWidth = columns.reduce((acc, col) => {
+    // If width is a number, use it; else default to 120
+    const colWidth = typeof col.width === "number" ? col.width : 120;
+    return acc + colWidth;
+  }, 0);
+
   return (
     <>
       {renderHeaders()}
@@ -566,13 +613,28 @@ const IntelligentTable = ({
         rowKey={(record) => `${modifiedColumns[0].dataIndex}-${record.key}`}
         columns={modifiedColumns}
         dataSource={applyColumnFilters(data, columns)}
-        tableLayout="auto"
-        summary={summary}
+        tableLayout="fixed"
+        summary={enableSummary ? summary : null}
         sticky={skickyHeader}
-        scroll={{ y: scrollY }}
+        scroll={{
+          y: 321,
+          x: totalWidth,
+        }}
         loading={loading}
-        pagination={pagination}
         bordered
+        virtual
+        pagination={
+          pagination && {
+            showSizeChanger: true,
+            pageSizeOptions: ["10", "20", "50", "100", `${data.length}`],
+            pageSize,
+            current: currentPage,
+            onChange: (page, size) => {
+              setCurrentPage(page);
+              setPageSize(size);
+            },
+          }
+        }
       />
     </>
   );
