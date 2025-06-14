@@ -2,13 +2,21 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    },
+  },
   build: {
     lib: {
-      entry: path.resolve(__dirname, "index.js"),
-      name: "IntelligentUI", // UMD global name (change if you want)
-      fileName: (format) => `intelligentable.${format}.js`, // consistent naming
+      // NOTE: If you're using TS, change this to index.ts when ready
+      entry: path.resolve(__dirname, "src/index.ts"),
+      name: "IntelligentUI",
+      formats: ["es", "umd"],
+      fileName: (format) => `intelligentable.${format}.js`,
     },
     rollupOptions: {
       external: [

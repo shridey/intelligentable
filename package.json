@@ -4,52 +4,69 @@
   "description": "An Intelligent Table component for React powered by Ant Design.",
   "main": "dist/intelligentable.umd.js",
   "module": "dist/intelligentable.es.js",
+  "types": "dist/index.d.ts",
   "exports": {
-    ".": {
-      "import": "./dist/intelligentable.es.js",
-      "require": "./dist/intelligentable.umd.js"
-    }
-  },
-  "publishConfig": {
-    "access": "public"
+    "import": "./dist/intelligentable.es.js",
+    "require": "./dist/intelligentable.umd.js"
   },
   "files": [
     "dist",
-    "index.js",
+    "src",
     "README.md"
   ],
   "scripts": {
-    "build": "vite build"
+    "build": "vite build && tsc --emitDeclarationOnly",
+    "typecheck": "tsc --noEmit"
   },
-  "peerDependencies": {
-    "@ant-design/icons": "^6.0.0",
-    "antd": "^5.25.3",
-    "prop-types": "^15.8.1",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-router-dom": "^7.6.1"
-  },
-  "devDependencies": {
-    "@ant-design/icons": "^6.0.0",
-    "@vitejs/plugin-react": "^4.5.0",
-    "antd": "^5.25.3",
-    "prop-types": "^15.8.1",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-router-dom": "^7.6.1",
-    "vite": "^6.3.5"
-  },
-  "sideEffects": [
-    "*.css"
-  ],
   "keywords": [
     "react",
     "component",
     "antd",
     "table",
     "css-modules",
-    "vite"
+    "vite",
+    "typescript"
   ],
   "author": "Shridhar Pandey <shridharpandeyofficial@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shridey/intelligentable"
+  },
+  "homepage": "https://github.com/shridey/intelligentable#readme",
+  "bugs": {
+    "url": "https://github.com/shridey/intelligentable/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": {
+    "@ant-design/icons": "^6.0.0",
+    "antd": "^5.26.0",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0",
+    "react-router-dom": "^6.22.3 || ^7.0.0"
+  },
+  "devDependencies": {
+    "@ant-design/icons": "^6.0.0",
+    "@types/node": "^24.0.1",
+    "@types/prop-types": "^15.7.15",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.5.2",
+    "antd": "^5.26.0",
+    "prop-types": "^15.8.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.2",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
+  },
+  "sideEffects": [
+    "*.css"
+  ]
 }

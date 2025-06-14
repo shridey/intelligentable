@@ -1,82 +1,154 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { intelligentTablePropTypes } from "../../utilities/propTypes";
 import { Table, Tooltip, Button, message } from "antd";
 import { InfoCircleOutlined, CopyOutlined } from "@ant-design/icons";
-import styles from "./IntelligentTable.module.css";
+import styles from "@/Components/IntelligentTable/IntelligentTable.module.css";
 
-const gradeOrder = {
+// Define types
+type ColorThreshold = {
+  min?: number;
+  max?: number;
+  inclusiveMin?: boolean; // default true
+  inclusiveMax?: boolean; // default false
+  color: string;
+};
+type ColorMapEntry = {
+  value: string | number;
+  color: string;
+};
+type Column = {
+  title: string;
+  dataIndex: string;
+  color?: ColorThreshold[] | ColorMapEntry[];
+  operation?: "sum" | "average" | "count";
+  filter?: { min?: number; max?: number; effect?: boolean }[];
+  width?: number | string;
+  children?: Column[];
+  sorted?: "asc" | "desc";
+};
+type FlattenedColumn = {
+  dataIndex: string;
+  operation?: string;
+};
+type RecordType = {
+  studentId: string | number;
+  studentName: string;
+  [key: string]: any;
+};
+export type Grade =
+  | "K"
+  | "1"
+  | "2"
+  | "3"
+  | "4"
+  | "5"
+  | "6"
+  | "7"
+  | "8"
+  | "9"
+  | "10"
+  | "11"
+  | "12";
+
+export const gradeOrder: Record<Grade, number> = {
   K: 0,
-  1: 1,
-  2: 2,
-  3: 3,
-  4: 4,
-  5: 5,
-  6: 6,
-  7: 7,
-  8: 8,
-  9: 9,
-  10: 10,
-  11: 11,
-  12: 12,
+  "1": 1,
+  "2": 2,
+  "3": 3,
+  "4": 4,
+  "5": 5,
+  "6": 6,
+  "7": 7,
+  "8": 8,
+  "9": 9,
+  "10": 10,
+  "11": 11,
+  "12": 12,
 };
 
 // Check if the value is a percentage string
-const isPercentString = (value) =>
+const isPercentString = (value: string | number): boolean =>
   typeof value === "string" && value.trim().endsWith("%");
 
 // Parse percentage string into number
-const parsePercent = (val) =>
+const parsePercent = (val: string): number =>
   isPercentString(val) ? parseFloat(val.replace("%", "")) : NaN;
 
-// Helper function to get color based on thresholds
-const getThresholdColor = (thresholds, value) => {
+const getThresholdColor = (
+  thresholds: ColorThreshold[],
+  value: number
+): string | undefined => {
   if (!Array.isArray(thresholds) || isNaN(value)) return undefined;
+
   return thresholds.find(
-    ({ min = -Infinity, max = Infinity }) => value >= min && value < max
+    ({
+      min = -Infinity,
+      max = Infinity,
+      inclusiveMin = true,
+      inclusiveMax = false,
+    }) => {
+      // Special case: exact match
+      if (min === max) return value === min;
+
+      const lowerCheck = inclusiveMin ? value >= min : value > min;
+      const upperCheck = inclusiveMax ? value <= max : value < max;
+
+      return lowerCheck && upperCheck;
+    }
   )?.color;
 };
 
-const getTextColor = (colorMap, val) => {
+const getTextColor = (
+  colorMap: ColorMapEntry[],
+  val: number | string
+): string | undefined => {
   if (!Array.isArray(colorMap)) return undefined;
   return colorMap.find((entry) => entry.value === val)?.color;
 };
 
-// Get sorter function based on column type
-const getSorter = (col) => {
+type RecordData = { [key: string]: any };
+
+interface ColumnType {
+  dataIndex: string;
+}
+
+const getSorter = (
+  col: ColumnType
+): ((a: RecordData, b: RecordData) => number) => {
   const isGrade = col.dataIndex === "grade";
   const isDayOfWeek = col.dataIndex === "dayOfWeek";
 
-  return (a, b) => {
+  return (a: RecordData, b: RecordData): number => {
     const aValue = a[col.dataIndex];
     const bValue = b[col.dataIndex];
 
-    const isDate = !isNaN(new Date(aValue)) && !isNaN(new Date(bValue));
+    const isDate =
+      !isNaN(new Date(aValue).getTime()) && !isNaN(new Date(bValue).getTime());
     const isPercent = isPercentString(aValue) && isPercentString(bValue);
 
     if (isPercent) {
       const pureA = parsePercent(aValue);
       const pureB = parsePercent(bValue);
-
       return pureA - pureB;
     }
 
-    if (isGrade) {
-      const aOrder = gradeOrder[aValue] ?? Infinity;
-      const bOrder = gradeOrder[bValue] ?? Infinity;
+    const isValidGrade = (val: any): val is Grade => val in gradeOrder;
+
+    if (isGrade && isValidGrade(aValue) && isValidGrade(bValue)) {
+      const aOrder = gradeOrder[aValue];
+      const bOrder = gradeOrder[bValue];
       return aOrder - bOrder;
     }
 
     if (isDate) {
       const aDate = new Date(aValue);
       const bDate = new Date(bValue);
-      return aDate - bDate;
+      return aDate.getTime() - bDate.getTime();
     }
 
     if (isDayOfWeek) {
-      const weekOrder = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-      const aOrder = weekOrder.indexOf(aValue);
-      const bOrder = weekOrder.indexOf(bValue);
+      const weekOrder = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+      const aOrder = weekOrder.indexOf(aValue.toLowerCase().slice(0, 3));
+      const bOrder = weekOrder.indexOf(bValue.toLowerCase().slice(0, 3));
       return aOrder - bOrder;
     }
 
@@ -92,16 +164,17 @@ const getSorter = (col) => {
   };
 };
 
-// Apply color thresholds, sorting, and column enhancements
-const applyColumnEnhancements = (cols, darkMode, schoolName) =>
-  cols?.map((col) => {
+export const applyColumnEnhancements = (
+  cols: Column[] = [],
+  darkMode: boolean
+): any[] =>
+  cols.map((col) => {
     const hasChildren = Array.isArray(col.children) && col.children.length > 0;
-    const shouldApplyColor = col.color && Array.isArray(col.color);
-    const hasClickHandler = typeof col.handleClick === "function";
+    const shouldApplyColor = Array.isArray(col.color);
 
-    const getColor = (val) => {
+    const getColor = (val: number): string | undefined => {
       if (typeof val !== "number" || !col.color) return undefined;
-      return getThresholdColor(col.color, val);
+      return getThresholdColor(col.color as ColorThreshold[], val);
     };
 
     return {
@@ -112,7 +185,6 @@ const applyColumnEnhancements = (cols, darkMode, schoolName) =>
             whiteSpace: "nowrap",
             overflow: "hidden",
             textOverflow: "ellipsis",
-
             flex: 1,
           }}
           title={col.title}
@@ -124,7 +196,7 @@ const applyColumnEnhancements = (cols, darkMode, schoolName) =>
       align: "center",
       onHeaderCell: () => ({
         style: {
-          padding: "6.6px",
+          padding: "6px",
           fontSize: "12px",
           backgroundColor: "var(--background-color)",
           color: "var(--text-color)",
@@ -136,7 +208,6 @@ const applyColumnEnhancements = (cols, darkMode, schoolName) =>
           fontSize: "12px",
           color: "var(--text-color)",
           backgroundColor: "var(--chart-background)",
-          cursor: hasClickHandler ? "pointer" : "default",
         },
       }),
       ...(hasChildren
@@ -148,35 +219,22 @@ const applyColumnEnhancements = (cols, darkMode, schoolName) =>
             ...(col.sorted && {
               defaultSortOrder: col.sorted === "asc" ? "ascend" : "descend",
             }),
-            render: (text, record) => {
+            render: (text: string | number, record: RecordType) => {
               const numericValue = isPercentString(text)
-                ? parsePercent(text)
-                : parseFloat(text);
+                ? parsePercent(text as string)
+                : parseFloat(String(text));
               const color = shouldApplyColor
-                ? getColor(numericValue) || getTextColor(col.color, text)
+                ? getColor(numericValue) ||
+                  getTextColor(col.color as ColorMapEntry[], text)
                 : undefined;
-
-              const handleClick = async (e) => {
-                e.stopPropagation();
-                try {
-                  await col.handleClick(
-                    record.studentId,
-                    record.studentName,
-                    col.title
-                  );
-                } catch (error) {
-                  console.error("Click handler failed:", error);
-                  message.error("Failed to process click action");
-                }
-              };
 
               const content = (
                 <span
                   style={{
                     color: darkMode ? "var(--text-color)" : color,
-                    textShadow:
-                      darkMode &&
-                      `-0.6px -0.6px 0px ${color}, 0.6px -0.6px 0px ${color}, -0.6px 0.6px 0px ${color}, 0.6px 0.6px 0px ${color}`,
+                    textShadow: darkMode
+                      ? `-0.6px -0.6px 0px ${color}, 0.6px -0.6px 0px ${color}, -0.6px 0.6px 0px ${color}, 0.6px 0.6px 0px ${color}`
+                      : undefined,
                     whiteSpace: "nowrap",
                     verticalAlign: "middle",
                     overflow: "hidden",
@@ -193,35 +251,15 @@ const applyColumnEnhancements = (cols, darkMode, schoolName) =>
                 </span>
               );
 
-              return hasClickHandler ? (
-                <div onClick={parsePercent(text) !== 100 ? handleClick : null}>
-                  {content}
-                </div>
-              ) : (
-                <div>
-                  {col.dataIndex === "studentName" ||
-                  col.dataIndex === "studentId" ? (
-                    <Link
-                      to={`/${schoolName}/student-profiles/${record.studentId}`}
-                      style={{
-                        textDecoration: "underline",
-                      }}
-                    >
-                      {content}
-                    </Link>
-                  ) : (
-                    content
-                  )}
-                </div>
-              );
+              return <div>{content}</div>;
             },
           }),
     };
   });
 
 // Recursively flatten columns to get dataIndex + operation
-const flattenColumns = (columns) => {
-  return columns?.reduce((acc, col) => {
+const flattenColumns = (columns: Column[] = []): FlattenedColumn[] => {
+  return columns.reduce<FlattenedColumn[]>((acc, col) => {
     if (col.children) {
       acc.push(...flattenColumns(col.children));
     } else if (col.dataIndex) {
@@ -231,8 +269,11 @@ const flattenColumns = (columns) => {
   }, []);
 };
 
-// Compute summary values (sum, average, count)
-const computeSummaryValue = (data, dataIndex, operation) => {
+const computeSummaryValue = (
+  data: Record<string, any>[],
+  dataIndex: string,
+  operation?: string
+): string | number => {
   const values = data.map((row) => row[dataIndex]).filter((val) => val != null);
 
   if (values.length === 0 || !operation) return "";
@@ -240,13 +281,12 @@ const computeSummaryValue = (data, dataIndex, operation) => {
   switch (operation) {
     case "sum": {
       if (values.every((v) => typeof v === "number")) {
-        const nums = values.filter((v) => typeof v === "number");
-        const total = nums.reduce((sum, val) => sum + val, 0);
+        const total = (values as number[]).reduce((sum, val) => sum + val, 0);
         return total.toFixed(0);
       }
 
       if (values.every(isPercentString)) {
-        const nums = values.map(parsePercent);
+        const nums = (values as string[]).map(parsePercent);
         const total = nums.reduce((sum, val) => sum + val, 0);
         return `${total.toFixed(1)}%`;
       }
@@ -256,12 +296,14 @@ const computeSummaryValue = (data, dataIndex, operation) => {
 
     case "average": {
       if (values.every((v) => typeof v === "number")) {
-        const avg = values.reduce((sum, val) => sum + val, 0) / values.length;
+        const avg =
+          (values as number[]).reduce((sum, val) => sum + val, 0) /
+          values.length;
         return avg.toFixed(1);
       }
 
       if (values.every(isPercentString)) {
-        const nums = values.map(parsePercent);
+        const nums = (values as string[]).map(parsePercent);
         const avg = nums.reduce((sum, val) => sum + val, 0) / nums.length;
         return `${avg.toFixed(1)}%`;
       }
@@ -269,62 +311,93 @@ const computeSummaryValue = (data, dataIndex, operation) => {
       return "";
     }
 
-    case "count": {
+    case "count":
       return values.length;
-    }
 
     default:
       return "";
   }
 };
 
-const applyColumnFilters = (data, columns) => {
+type RowData = Record<string, any>;
+
+const applyColumnFilters = (data: RowData[], columns: Column[]): RowData[] => {
   const activeFilterCols = columns
     ?.flatMap((col) => (col.children ? col.children : [col]))
     .filter(
       (col) => Array.isArray(col.filter) && col.filter.some((f) => f.effect)
     );
 
-  if (activeFilterCols?.length === 0) return data;
+  if (!activeFilterCols || activeFilterCols.length === 0) return data;
 
   return data?.filter((item) => {
-    return activeFilterCols?.every((col) => {
-      const filters = col.filter.filter((f) => f.effect);
+    return activeFilterCols.every((col) => {
+      const filters = (col.filter || []).filter((f) => f.effect);
       let value = item[col.dataIndex];
 
-      // Convert percentage string to number
       if (typeof value === "string" && value.endsWith("%")) {
         value = parseFloat(value.replace("%", ""));
       }
 
       return filters.some(({ min = -Infinity, max = Infinity }) => {
-        return value >= min && value < max;
+        return typeof value === "number" && value >= min && value < max;
       });
     });
   });
 };
 
-const extractLegends = (columns) => {
-  const legendSet = new Map();
+type Legend = {
+  label: string;
+  color: string;
+};
 
-  const collectThresholds = (col) => {
-    if (col.color) {
-      col.color.forEach(({ min, max, color }) => {
-        const key = `${min ?? "-∞"}-${max ?? "∞"}-${color}`;
-        const label =
-          min != null && max != null
-            ? `${
-                String(min).includes(".") ? "> " + (min - 0.1) : "≥ " + min
-              } - ${
-                String(max).includes(".") ? "≤ " + (max - 0.1) : "< " + max
-              }`
-            : min != null
-            ? `${String(min).includes(".") ? "> " + (min - 0.1) : "≥ " + min}`
-            : `${String(max).includes(".") ? "≤ " + (max - 0.1) : "< " + max}`;
-        legendSet.set(key, { label, color });
+const extractLegends = (columns: Column[]): Legend[] => {
+  const legendSet = new Map<string, Legend>();
+
+  const isThreshold = (
+    entry: ColorThreshold | ColorMapEntry
+  ): entry is ColorThreshold => "min" in entry || "max" in entry;
+
+  const collectThresholds = (col: Column): void => {
+    if (Array.isArray(col.color)) {
+      col.color.forEach((entry) => {
+        if (!isThreshold(entry)) return;
+
+        const { min, max, color } = entry;
+        const inclusiveMin = entry.inclusiveMin !== false; // default true
+        const inclusiveMax = entry.inclusiveMax === true; // default false
+
+        const key = `${min ?? "-∞"}-${
+          max ?? "∞"
+        }-${inclusiveMin}-${inclusiveMax}-${color}`;
+
+        const format = (val: number) =>
+          val % 1 !== 0 ? val.toFixed(1) : val.toString();
+
+        const getLabel = (): string => {
+          const minSymbol = inclusiveMin ? "≥" : ">";
+          const maxSymbol = inclusiveMax ? "≤" : "<";
+
+          if (min != null && max != null && min === max) {
+            return `= ${format(min)}`;
+          }
+
+          if (min != null && max != null) {
+            return `${minSymbol} ${format(min)} and ${maxSymbol} ${format(
+              max
+            )}`;
+          }
+
+          if (min != null) return `${minSymbol} ${format(min)}`;
+          if (max != null) return `${maxSymbol} ${format(max)}`;
+          return "";
+        };
+
+        legendSet.set(key, { label: getLabel(), color });
       });
     }
-    if (col.children) {
+
+    if (Array.isArray(col.children)) {
       col.children.forEach(collectThresholds);
     }
   };
@@ -334,44 +407,46 @@ const extractLegends = (columns) => {
 };
 
 // Function to convert table data to TSV (Tab-Separated Values) format
-const convertToTSV = (columns, data) => {
-  // Flatten the columns structure to get all leaf columns
-  const flattenColumnsRecursive = (cols) => {
-    return cols.reduce((acc, col) => {
-      if (col.children) {
-        return [...acc, ...flattenColumnsRecursive(col.children)];
+const convertToTSV = (
+  columns: Column[],
+  data: Record<string, any>[]
+): string => {
+  // Recursively flatten nested column structure
+  const flattenColumnsRecursive = (cols: Column[]): Column[] =>
+    cols.reduce<Column[]>((acc, col) => {
+      if (Array.isArray(col.children) && col.children.length > 0) {
+        return acc.concat(flattenColumnsRecursive(col.children));
       }
-      return [...acc, col];
+      return acc.concat(col);
     }, []);
-  };
 
   const flatColumns = flattenColumnsRecursive(columns);
 
-  // Get headers
-  const headers = flatColumns.map((col) => col.title).join("\t");
+  // Extract headers
+  const headers = flatColumns.map((col) =>
+    typeof col.title === "string" ? col.title : ""
+  );
 
-  // Get rows
-  const rows = data.map((row) => {
-    return flatColumns
-      .map((col) => {
-        const value = row[col.dataIndex];
-        // Handle undefined/null values and convert to string
-        const textValue =
-          value !== undefined && value !== null ? String(value) : "";
-        // Replace tabs and newlines in the data to prevent formatting issues
-        return textValue.replace(/\t/g, " ").replace(/\n/g, " ");
-      })
-      .join("\t");
-  });
+  // Extract and sanitize each row
+  const rows = data.map((row) =>
+    flatColumns.map((col) => {
+      const val = row[col.dataIndex];
+      const safeVal = val !== undefined && val !== null ? String(val) : "";
 
-  return [headers, ...rows].join("\n");
+      // Replace tabs/newlines to preserve TSV structure
+      return safeVal.replace(/\t/g, " ").replace(/\r?\n/g, " ");
+    })
+  );
+
+  // Combine headers and rows into final TSV string
+  const tsvLines = [headers, ...rows].map((line) => line.join("\t"));
+  return tsvLines.join("\n");
 };
 
 const IntelligentTable = ({
-  columns,
-  data,
-  schoolName = "icps-clone",
-  summaryTitle,
+  columns = [],
+  data = [],
+  summaryTitle = "",
   instructions = "",
   loading = true,
   pagination = false,
@@ -381,11 +456,7 @@ const IntelligentTable = ({
   enableCopy = true,
   darkMode = false,
 }) => {
-  const modifiedColumns = applyColumnEnhancements(
-    columns,
-    darkMode,
-    schoolName
-  );
+  const modifiedColumns = applyColumnEnhancements(columns, darkMode);
   const flatCols = flattenColumns(columns);
   const legends = extractLegends(columns);
 
@@ -396,58 +467,71 @@ const IntelligentTable = ({
     backgroundColor: "var(--background-color)",
   };
 
-  const summary = (pageData) => (
-    <Table.Summary fixed>
-      <Table.Summary.Row style={summaryRowStyle}>
-        {flatCols?.map(({ dataIndex, operation }, index) => {
-          const content =
-            index === 0
-              ? operation === "count"
-                ? `Count: ${computeSummaryValue(
-                    pageData,
-                    dataIndex,
-                    operation
-                  )}${summaryTitle ? ` | ${summaryTitle}` : ""}`
-                : summaryTitle
-                ? summaryTitle
-                : ""
-              : computeSummaryValue(pageData, dataIndex, operation);
+  type RowData = {
+    studentId: string;
+    studentName: string;
+    key: string | number;
+    [key: string]: any;
+  };
 
-          const colorConfig = columns
-            .flatMap((c) => (c.children ? c.children : [c]))
-            .find((c) => c.dataIndex === dataIndex)?.color;
+  const summary = (pageData: readonly RowData[]) => {
+    const mutableData = [...pageData];
+    return (
+      <Table.Summary fixed>
+        <Table.Summary.Row style={summaryRowStyle}>
+          {flatCols?.map(({ dataIndex, operation }, index) => {
+            const rawContent =
+              index === 0
+                ? operation === "count"
+                  ? `Count: ${computeSummaryValue(
+                      mutableData,
+                      dataIndex,
+                      operation
+                    )}${summaryTitle ? ` | ${summaryTitle}` : ""}`
+                  : summaryTitle || ""
+                : computeSummaryValue(mutableData, dataIndex, operation);
 
-          const value = isPercentString(content)
-            ? parsePercent(content)
-            : parseFloat(content);
+            const content = rawContent?.toString() ?? "";
 
-          const color =
-            colorConfig && !isNaN(value)
-              ? getThresholdColor(colorConfig, value)
+            const colorConfig = (columns as Column[])
+              .flatMap((col) => (col.children ? col.children : [col]))
+              .find((col) => col.dataIndex === dataIndex)?.color;
+
+            const value = isPercentString(content)
+              ? parsePercent(content)
+              : parseFloat(content);
+
+            const color =
+              colorConfig && !isNaN(value)
+                ? getThresholdColor(colorConfig, value)
+                : undefined;
+
+            const textShadow = darkMode
+              ? `-0.6px -0.6px 0px ${color}, 0.6px -0.6px 0px ${color}, -0.6px 0.6px 0px ${color}, 0.6px 0.6px 0px ${color}`
               : undefined;
 
-          return (
-            <Table.Summary.Cell key={dataIndex || index} align="center">
-              <div
-                style={{
-                  lineHeight: "0.1",
-
-                  color: darkMode ? "var(--text-color)" : color,
-                  textShadow:
-                    darkMode &&
-                    `-0.6px -0.6px 0px ${color}, 0.6px -0.6px 0px ${color}, -0.6px 0.6px 0px ${color}, 0.6px 0.6px 0px ${color}`,
-                  whiteSpace: "nowrap",
-                  textOverflow: "ellipsis",
-                }}
+            return (
+              <Table.Summary.Cell
+                key={dataIndex || index}
+                index={index}
+                align="center"
               >
-                {content}
-              </div>
-            </Table.Summary.Cell>
-          );
-        })}
-      </Table.Summary.Row>
-    </Table.Summary>
-  );
+                <div
+                  style={{
+                    lineHeight: "0",
+                    color: darkMode ? "var(--text-color)" : color,
+                    textShadow,
+                  }}
+                >
+                  {content}
+                </div>
+              </Table.Summary.Cell>
+            );
+          })}
+        </Table.Summary.Row>
+      </Table.Summary>
+    );
+  };
 
   const handleCopyToClipboard = async () => {
     try {
@@ -598,11 +682,13 @@ const IntelligentTable = ({
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalWidth = columns.reduce((acc, col) => {
-    // If width is a number, use it; else default to 120
-    const colWidth = typeof col.width === "number" ? col.width : 120;
-    return acc + colWidth;
-  }, 0);
+  const totalWidth: number = columns.reduce(
+    (acc: number, col: { width?: number }) => {
+      const colWidth: number = typeof col.width === "number" ? col.width : 120;
+      return acc + colWidth;
+    },
+    0
+  );
 
   return (
     <>
@@ -612,9 +698,16 @@ const IntelligentTable = ({
         className={styles["custom-table"]}
         rowKey={(record) => `${modifiedColumns[0].dataIndex}-${record.key}`}
         columns={modifiedColumns}
-        dataSource={applyColumnFilters(data, columns)}
+        dataSource={
+          applyColumnFilters(data, columns).map((row, index) => ({
+            ...row,
+            key: row.key ?? `${row.studentId ?? index}`,
+            studentId: row.studentId ?? "",
+            studentName: row.studentName ?? "",
+          })) satisfies RowData[]
+        }
         tableLayout="fixed"
-        summary={enableSummary ? summary : null}
+        summary={enableSummary ? summary : undefined}
         sticky={skickyHeader}
         scroll={{
           y: 321,
@@ -639,7 +732,5 @@ const IntelligentTable = ({
     </>
   );
 };
-
-IntelligentTable.propTypes = intelligentTablePropTypes;
 
 export default IntelligentTable;

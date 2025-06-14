@@ -10,7 +10,7 @@ A highly customizable, feature-rich React table component built on **Ant Design�
 
 - ✅ **Smart Data Handling**: Automatically detects and sorts percentages, grades, weekdays, and dates
 - 🎨 **Visual Data Representation**: Color-coded cells based on value thresholds
-- 📋 **TSV Export**: Built-in copy-to-clipboard and download fallback
+- 📋 **Excel Ready Copy**: Built-in copy-to-clipboard
 - 📱 **Responsive Design**: Adapts to various screen sizes with horizontal scroll
 - ♿ **Accessibility Focused**: Keyboard navigable with proper ARIA support
 - 🌙 **Dark Mode**: Full compatibility with dark theme implementations
@@ -72,21 +72,20 @@ function App() {
 
 ## 🔧 Props
 
-| Prop            | Type            | Default        | Description                         |
-| --------------- | --------------- | -------------- | ----------------------------------- |
-| `columns`       | `Array<Column>` | `[]`           | Table column configuration          |
-| `data`          | `Array<Object>` | `[]`           | Data to display in the table        |
-| `schoolName`    | `string`        | `'icps-clone'` | Base path for student profile links |
-| `summaryTitle`  | `string`        | `''`           | Title for the summary row           |
-| `instructions`  | `string`        | `''`           | Help text above the table           |
-| `loading`       | `boolean`       | `false`        | Shows loading indicator             |
-| `pagination`    | `boolean`       | `false`        | Enables pagination controls         |
-| `stickyHeader`  | `boolean`       | `false`        | Sticky header on scroll             |
-| `enableLegends` | `boolean`       | `false`        | Show color legends                  |
-| `enableSummary` | `boolean`       | `true`         | Show summary calculation row        |
-| `enableCopy`    | `boolean`       | `true`         | Enable copy to clipboard            |
-| `darkMode`      | `boolean`       | `false`        | Dark theme compatibility            |
-| `styles`        | `object`        | `undefined`    | Inline style overrides              |
+| Prop            | Type            | Default     | Description                  |
+| --------------- | --------------- | ----------- | ---------------------------- |
+| `columns`       | `Array<Column>` | `[]`        | Table column configuration   |
+| `data`          | `Array<Object>` | `[]`        | Data to display in the table |
+| `summaryTitle`  | `string`        | `''`        | Title for the summary row    |
+| `instructions`  | `string`        | `''`        | Help text above the table    |
+| `loading`       | `boolean`       | `false`     | Shows loading indicator      |
+| `pagination`    | `boolean`       | `false`     | Enables pagination controls  |
+| `stickyHeader`  | `boolean`       | `false`     | Sticky header on scroll      |
+| `enableLegends` | `boolean`       | `false`     | Show color legends           |
+| `enableSummary` | `boolean`       | `true`      | Show summary calculation row |
+| `enableCopy`    | `boolean`       | `true`      | Enable copy to clipboard     |
+| `darkMode`      | `boolean`       | `false`     | Dark theme compatibility     |
+| `styles`        | `object`        | `undefined` | Inline style overrides       |
 
 ---
 
@@ -108,7 +107,6 @@ Each column object can include the following properties:
   ],
   sorted: 'asc', // or 'desc'
   width: 150,
-  handleClick: (id, name, field) => {}
 }
 ```
 
@@ -205,4 +203,4 @@ Please open an issue to propose changes or features before submitting a pull req
 
 ## 📄 License
 
-MIT © [Shridhar Pandey]
+MIT © Shridhar Pandey
