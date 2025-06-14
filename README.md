@@ -6,10 +6,17 @@ A highly customizable, feature-rich React table component built on **Ant Design�
 
 ---
 
+## 🚧 Migration & Roadmap
+
+> 🧪 This project is currently in **beta** while we stabilize the TypeScript-first release. Expect rapid updates, and feel free to contribute or raise issues.
+
+---
+
 ## ✨ Features
 
 - ✅ **Smart Data Handling**: Automatically detects and sorts percentages, grades, weekdays, and dates
 - 🎨 **Visual Data Representation**: Color-coded cells based on value thresholds
+- 🧾 **Automatic Legend Generation**: Dynamically creates legends based on color threshold rules
 - 📋 **Excel Ready Copy**: Built-in copy-to-clipboard
 - 📱 **Responsive Design**: Adapts to various screen sizes with horizontal scroll
 - ♿ **Accessibility Focused**: Keyboard navigable with proper ARIA support
