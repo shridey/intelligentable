@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
-// https://vitejs.dev/config/
+// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
   resolve: {
@@ -12,27 +12,34 @@ export default defineConfig({
   },
   build: {
     lib: {
-      // NOTE: If you're using TS, change this to index.ts when ready
-      entry: path.resolve(__dirname, "src/index.ts"),
-      name: "IntelligentUI",
+      entry: path.resolve(__dirname, "src/index.tsx"),
+      name: "intelligentable",
       formats: ["es", "umd"],
-      fileName: (format) => `intelligentable.${format}.js`,
+      fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
+      // Add all peer dependencies here
       external: [
         "react",
         "react-dom",
-        "react-router-dom",
         "antd",
         "@ant-design/icons",
+        "exceljs",
+        "file-saver",
+        "jspdf",
+        "jspdf-autotable",
       ],
       output: {
         globals: {
+          // Define global variable names for UMD build
           react: "React",
           "react-dom": "ReactDOM",
           antd: "antd",
           "@ant-design/icons": "icons",
-          "react-router-dom": "ReactRouterDOM",
+          exceljs: "ExcelJS",
+          "file-saver": "saveAs",
+          jspdf: "jsPDF",
+          "jspdf-autotable": "jsPDFAutoTable",
         },
       },
     },
