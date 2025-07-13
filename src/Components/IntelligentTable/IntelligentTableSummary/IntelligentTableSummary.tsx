@@ -123,44 +123,43 @@ const computeSummary = (
 export const IntelligentTableSummary = ({
   data = [],
   columns = [],
+  defaultSummaryRowStyle = {},
 }: IntelligentTableSummaryProps) => {
   const summary = computeSummary(data, columns);
 
   return (
-    <Table.Summary>
-      <Table.Summary.Row>
-        {columns.map((column, index) => {
-          const key = String(column.dataIndex);
-          const value =
-            index === 0 ? `Summary ${summary[key] || ""}` : summary[key] || "-";
+    <Table.Summary.Row style={defaultSummaryRowStyle}>
+      {columns.map((column, index) => {
+        const key = String(column.dataIndex);
+        const value =
+          index === 0 ? `Summary ${summary[key] || ""}` : summary[key] || "-";
 
-          const color = getColor(
-            column.colorConfig as IntelligentTableColorConfigType[],
-            value
-          );
+        const color = getColor(
+          column.colorConfig as IntelligentTableColorConfigType[],
+          value
+        );
 
-          return (
-            <Table.Summary.Cell key={index} index={index} align={column.align}>
-              <span
-                style={{
-                  textOverflow: column.ellipsis ? "ellipsis" : undefined,
-                  whiteSpace: column.ellipsis ? "nowrap" : undefined,
-                  overflow: column.ellipsis ? "hidden" : undefined,
-                  maxWidth: column.ellipsis ? column.width : undefined,
-                  display: column.ellipsis ? "block" : undefined,
-                  color: color,
-                }}
-                title={String(value)}
-              >
-                {value}&nbsp;
-                {column.displaySummaryOperationInSummary && (
-                  <sub>({column.summaryOperation})</sub>
-                )}
-              </span>
-            </Table.Summary.Cell>
-          );
-        })}
-      </Table.Summary.Row>
-    </Table.Summary>
+        return (
+          <Table.Summary.Cell key={index} index={index} align={column.align}>
+            <span
+              style={{
+                textOverflow: column.ellipsis ? "ellipsis" : undefined,
+                whiteSpace: column.ellipsis ? "nowrap" : undefined,
+                overflow: column.ellipsis ? "hidden" : undefined,
+                maxWidth: column.ellipsis ? column.width : undefined,
+                display: column.ellipsis ? "block" : undefined,
+                color: color,
+              }}
+              title={String(value)}
+            >
+              {value}&nbsp;
+              {column.displaySummaryOperationInSummary && (
+                <sub>({column.summaryOperation})</sub>
+              )}
+            </span>
+          </Table.Summary.Cell>
+        );
+      })}
+    </Table.Summary.Row>
   );
 };

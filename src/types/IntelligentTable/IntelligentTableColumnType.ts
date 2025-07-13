@@ -6,5 +6,5 @@ export interface IntelligentTableColumnType extends TableColumnType {
   roundOff?: number | undefined;
   colorConfig?: IntelligentTableColorConfigType[];
   summaryOperation?: "sum" | "average" | "count" | "max" | "min";
-  displaySummaryOperationInSummary?: boolean | undefined;
+  displaySummaryOperationInSummary?: boolean;
 }

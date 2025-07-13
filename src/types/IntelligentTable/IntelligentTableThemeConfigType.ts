@@ -16,7 +16,11 @@ interface IntelligentTableSearchInputStyle
 
 export interface IntelligentTableThemeConfigType
   extends NonNullable<NonNullable<ThemeConfig["components"]>["Table"]> {
-  legend?: IntelligentTableLegendStyleType;
+  defaultSummaryRow?: Pick<
+    React.CSSProperties,
+    "color" | "backgroundColor" | "fontWeight"
+  >;
+  legends?: IntelligentTableLegendStyleType;
   searchBox?: IntelligentTableSearchInputStyle;
   exportButton?: Pick<
     NonNullable<NonNullable<ThemeConfig["components"]>["Button"]>,

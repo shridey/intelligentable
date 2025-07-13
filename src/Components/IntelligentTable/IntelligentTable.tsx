@@ -7,17 +7,28 @@ import {
   getLeafColumns,
   getValueByDataIndex,
 } from "@/utils/intelligentTable/helperFunctions";
+import { transformPipeline } from "@/utils/intelligentTable/dataTransformUtils";
 import type { IntelligentTableProps } from "@/types/IntelligentTable/IntelligentTableProps";
 
 export const IntelligentTable = ({
   columns = [],
   dataSource = [],
-  tableThemeConfig = {},
-  enableDefaultSummary = false,
+  dataTransform = ({ pipeline }) => pipeline([]),
+  tableThemeConfig = {
+    defaultSummaryRow: {},
+    legends: {},
+    searchBox: {},
+    exportButton: {},
+    exportButtonDropdown: {},
+  },
+  defaultSummary = {
+    enable: false,
+    fixed: false,
+  },
   enableLegends = false,
   defaultUniversalSearch = {
     enable: false,
-    onSearch: () => undefined,
+    onSearch: () => false,
   },
   tableExport = {
     enable: false,
@@ -30,11 +41,22 @@ export const IntelligentTable = ({
 
   const [searchText, setSearchText] = useState("");
 
+  // Transform data using provided transform function
+  const transformedData = useMemo(() => {
+    const raw = dataSource ?? [];
+
+    if (!dataTransform) return raw;
+
+    return dataTransform({
+      pipeline: (steps) => transformPipeline([...raw], steps),
+    });
+  }, [dataSource, dataTransform]);
+
   const filteredData = useMemo(() => {
     const search = searchText.trim().toLowerCase();
-    if (!search) return dataSource;
+    if (!search) return transformedData;
 
-    return dataSource.filter((row) => {
+    return transformedData?.filter((row) => {
       if (defaultUniversalSearch.onSearch) {
         return defaultUniversalSearch.onSearch(searchText, row, leafColumns);
       }
@@ -68,7 +90,7 @@ export const IntelligentTable = ({
         return stringValue?.toLowerCase().includes(search) ?? false;
       });
     });
-  }, [defaultUniversalSearch, searchText, dataSource, leafColumns]);
+  }, [defaultUniversalSearch, searchText, transformedData, leafColumns]);
 
   return (
     <ConfigProvider
@@ -93,7 +115,7 @@ export const IntelligentTable = ({
           data={filteredData}
           legends={{
             enable: enableLegends,
-            style: tableThemeConfig?.legend || {},
+            style: tableThemeConfig?.legends || {},
           }}
           defaultUniversalSearch={{
             enable: defaultUniversalSearch.enable,
@@ -113,9 +135,20 @@ export const IntelligentTable = ({
           summary={
             props.summary
               ? props.summary
-              : enableDefaultSummary
+              : defaultSummary.enable
               ? (data) => (
-                  <IntelligentTableSummary data={data} columns={leafColumns} />
+                  <Table.Summary
+                    fixed={defaultSummary.fixed}
+                    children={
+                      <IntelligentTableSummary
+                        data={data}
+                        columns={leafColumns}
+                        defaultSummaryRowStyle={
+                          tableThemeConfig?.defaultSummaryRow || {}
+                        }
+                      />
+                    }
+                  />
                 )
               : undefined
           }

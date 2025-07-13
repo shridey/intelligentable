@@ -4,9 +4,9 @@ export interface IntelligentTableColorConfigType
   extends Pick<CSSProperties, "color"> {
   min?: number | undefined;
   max?: number | undefined;
-  inclusiveMin?: boolean | undefined;
-  inclusiveMax?: boolean | undefined;
+  inclusiveMin?: boolean;
+  inclusiveMax?: boolean;
   str?: string | undefined;
   regEx?: string | undefined;
-  exactMatch?: boolean | undefined;
+  exactMatch?: boolean;
 }

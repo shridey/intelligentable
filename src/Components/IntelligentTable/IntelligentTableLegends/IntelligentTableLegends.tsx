@@ -81,50 +81,52 @@ export const IntelligentTableLegends = ({
   const legends = extractLegends(columns);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        gap: 18,
-        padding: 6,
-        border: legendStyle?.border || "1px solid #d9d9d9",
-        borderRadius: 6,
-        backgroundColor: legendStyle?.backgroundColor,
-      }}
-    >
-      {legends.map((item, idx) => {
-        return (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-            }}
-            key={idx}
-          >
-            <svg
-              width={(legendStyle?.circle?.radius as number) * 2 || 12}
-              height={(legendStyle?.circle?.radius as number) * 2 || 12}
-            >
-              <circle
-                cx={legendStyle?.circle?.radius || 6}
-                cy={legendStyle?.circle?.radius || 6}
-                r={legendStyle?.circle?.radius || 6}
-                fill={item.color}
-              />
-            </svg>
-            <span
+    legends.length > 0 && (
+      <div
+        style={{
+          display: "flex",
+          gap: 18,
+          padding: 6,
+          border: legendStyle?.border || "1px solid #d9d9d9",
+          borderRadius: 6,
+          backgroundColor: legendStyle?.backgroundColor,
+        }}
+      >
+        {legends.map((item, idx) => {
+          return (
+            <div
               style={{
-                fontSize: legendStyle?.label?.fontSize || 14,
-                fontWeight: legendStyle?.label?.fontWeight,
-                fontFamily: legendStyle?.label?.fontFamily,
-                color: legendStyle?.label?.color,
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
               }}
+              key={idx}
             >
-              {item.label}
-            </span>
-          </div>
-        );
-      })}
-    </div>
+              <svg
+                width={(legendStyle?.circle?.radius as number) * 2 || 12}
+                height={(legendStyle?.circle?.radius as number) * 2 || 12}
+              >
+                <circle
+                  cx={legendStyle?.circle?.radius || 6}
+                  cy={legendStyle?.circle?.radius || 6}
+                  r={legendStyle?.circle?.radius || 6}
+                  fill={item.color}
+                />
+              </svg>
+              <span
+                style={{
+                  fontSize: legendStyle?.label?.fontSize || 14,
+                  fontWeight: legendStyle?.label?.fontWeight,
+                  fontFamily: legendStyle?.label?.fontFamily,
+                  color: legendStyle?.label?.color,
+                }}
+              >
+                {item.label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    )
   );
 };

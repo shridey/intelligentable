@@ -2,23 +2,30 @@ import type { TableProps } from "antd";
 import type { IntelligentTableColumnType } from "@/types/IntelligentTable/IntelligentTableColumnType";
 import type { IntelligentTableThemeConfigType } from "@/types/IntelligentTable/IntelligentTableThemeConfigType";
 import type { AnyObject } from "antd/es/_util/type";
+import type { SummaryProps } from "rc-table/lib/Footer/Summary";
 
 export interface IntelligentTableProps extends TableProps {
-  columns?: IntelligentTableColumnType[];
-  dataSource?: readonly AnyObject[] | undefined;
+  columns: IntelligentTableColumnType[];
+  dataSource: readonly AnyObject[];
+  dataTransform?: (ctx: {
+    pipeline: (steps: Array<(data: AnyObject[]) => AnyObject[]>) => AnyObject[];
+  }) => AnyObject[];
   tableThemeConfig?: IntelligentTableThemeConfigType;
-  enableDefaultSummary?: boolean | undefined;
-  enableLegends?: boolean | undefined;
+  defaultSummary?: {
+    enable?: boolean;
+    fixed?: SummaryProps["fixed"];
+  };
+  enableLegends?: boolean;
   defaultUniversalSearch?: {
-    enable: boolean | undefined;
+    enable: boolean;
     onSearch?: (
-      searchText: string,
+      searchText: string | undefined,
       row: AnyObject,
       columns: IntelligentTableColumnType[]
-    ) => boolean | undefined;
+    ) => boolean;
   };
   tableExport?: {
-    enable: boolean | undefined;
+    enable: boolean;
     exportFileName?: string | undefined;
   };
 }

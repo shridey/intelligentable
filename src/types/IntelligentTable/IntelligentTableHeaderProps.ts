@@ -6,17 +6,17 @@ export type IntelligentTableHeaderProps = {
   columns: IntelligentTableColumnType[];
   data: readonly AnyObject[] | undefined;
   legends?: {
-    enable: boolean | undefined;
+    enable: boolean;
     style: IntelligentTableLegendStyleType;
   };
   defaultUniversalSearch?: {
-    enable: boolean | undefined;
+    enable: boolean;
     searchText: string | undefined;
     setSearchText: React.Dispatch<React.SetStateAction<string>>;
     searchBoxPlaceholderText?: string | undefined;
   };
   exportButton: {
-    enable: boolean | undefined;
+    enable: boolean;
     exportFileName: string | undefined;
   };
 };

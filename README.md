@@ -1,213 +1,154 @@
-# 🧠 IntelligentTable Component
+# Intelligentable by @shridey
 
-<!-- ![IntelligentTable Demo](https://demo-image-url.png) -->
-
-A highly customizable, feature-rich React table component built on **Ant Design’s Table**, with intelligent data handling, advanced sorting, filtering, and visualization capabilities.
+> I believe that UI can be intelligent, so I select the components from the top UI libraries exists out there, and make them smarter, by adding features that they must have as a component.
 
 ---
 
-## 🚧 Migration & Roadmap
-
-> 🧪 This project is currently in **beta** while we stabilize the TypeScript-first release. Expect rapid updates, and feel free to contribute or raise issues.
-
----
-
-## ✨ Features
-
-- ✅ **Smart Data Handling**: Automatically detects and sorts percentages, grades, weekdays, and dates
-- 🎨 **Visual Data Representation**: Color-coded cells based on value thresholds
-- 🧾 **Automatic Legend Generation**: Dynamically creates legends based on color threshold rules
-- 📋 **Excel Ready Copy**: Built-in copy-to-clipboard
-- 📱 **Responsive Design**: Adapts to various screen sizes with horizontal scroll
-- ♿ **Accessibility Focused**: Keyboard navigable with proper ARIA support
-- 🌙 **Dark Mode**: Full compatibility with dark theme implementations
-- ⚡ **Performance Optimized**: Supports virtual scrolling for large datasets
-
----
-
-## 📦 Installation
+### 📦 Installation
 
 ```bash
 npm install @shridey/intelligentable
-# or
-yarn add  @shridey/intelligentable
 ```
 
 ---
 
-## 🚀 Usage
+## 🧠 IntelligentTable
 
-```jsx
-import IntelligentTable from "@shridey/intelligentable";
+> The first component of the **Intelligentable** library – built to make your tables not just pretty, but _smart_.
 
-const columns = [
-  {
-    title: "Student",
-    dataIndex: "studentName",
-    operation: "count",
-  },
-  {
-    title: "Performance",
-    children: [
-      {
-        title: "Math",
-        dataIndex: "mathScore",
-        color: [
-          { min: 0, max: 60, color: "#ff4d4f" },
-          { min: 60, max: 80, color: "#faad14" },
-          { min: 80, max: 101, color: "#52c41a" },
-        ],
-        operation: "average",
-      },
-    ],
-  },
-];
+A powerful React TypeScript table component on top of **Ant Design** with important built-in features.
 
-const data = [
-  { studentName: "Alice", mathScore: "85%" },
-  { studentName: "Bob", mathScore: "72%" },
-];
+---
+
+### ✨ Features
+
+- 🌈 **Themeable** – fully customize each visual components
+- 📊 **Automatic summary row** – sum, average, count, max, min
+- 🔍 **Universal search** – out of the box or bring your own logic
+- 🎨 **Legend colors** – based on dynamic rules
+- 📤 **Export** – to Excel, PDF, JSON, CSV, TSV
+- 🧩 **Composable** – plug in data transformations
+
+---
+
+### 🚀 Usage
+
+```tsx
+import { IntelligentTable } from "@shridey/intelligentable";
+import type { IntelligentTableColumnType } from "@shridey/intelligentable";
 
 function App() {
+  const columns: IntelligentTableColumnType[] = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      summaryOperation: "count",
+    },
+    {
+      title: "Salary",
+      dataIndex: "salary",
+      summaryOperation: "sum",
+      colorConfig: [
+        { min: 0, max: 50000, color: "red" },
+        { min: 50000, max: 100000, inclusiveMax: true, color: "green" },
+      ],
+    },
+  ];
+
+  const dataSource = [
+    { key: 1, name: "Alice", salary: 40000 },
+    { key: 2, name: "Bob", salary: 60000 },
+  ];
+
   return (
-    <IntelligentTable columns={columns} data={data} enableLegends enableCopy />
+    <IntelligentTable
+      columns={columns}
+      dataSource={dataSource}
+      defaultSummary={{ enable: true, fixed: "bottom" }}
+      enableLegends
+      defaultUniversalSearch={{ enable: true }}
+      tableExport={{ enable: true, exportFileName: "MyTable" }}
+      tableThemeConfig={{
+        legends: { fontSize: "12px" },
+      }}
+    />
   );
 }
+
+export default App;
 ```
 
 ---
 
-## 🔧 Props
+### ⚙️ Props (extended)
 
-| Prop            | Type            | Default     | Description                  |
-| --------------- | --------------- | ----------- | ---------------------------- |
-| `columns`       | `Array<Column>` | `[]`        | Table column configuration   |
-| `data`          | `Array<Object>` | `[]`        | Data to display in the table |
-| `summaryTitle`  | `string`        | `''`        | Title for the summary row    |
-| `instructions`  | `string`        | `''`        | Help text above the table    |
-| `loading`       | `boolean`       | `false`     | Shows loading indicator      |
-| `pagination`    | `boolean`       | `false`     | Enables pagination controls  |
-| `stickyHeader`  | `boolean`       | `false`     | Sticky header on scroll      |
-| `enableLegends` | `boolean`       | `false`     | Show color legends           |
-| `enableSummary` | `boolean`       | `true`      | Show summary calculation row |
-| `enableCopy`    | `boolean`       | `true`      | Enable copy to clipboard     |
-| `darkMode`      | `boolean`       | `false`     | Dark theme compatibility     |
-| `styles`        | `object`        | `undefined` | Inline style overrides       |
+| Prop                     | Type                                                                    | Description                                                                                                            |
+| ------------------------ | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `columns`                | `IntelligentTableColumnType[]`                                          | Same as AntD, but with extra fields: `roundOff`, `colorConfig`, `summaryOperation`, `displaySummaryOperationInSummary` |
+| `dataSource`             | `readonly AnyObject[]`                                                  | Table data                                                                                                             |
+| `defaultSummary`         | `{ enable?: boolean; fixed?: "top" \| "bottom" }`                       | Enables built-in summary row                                                                                           |
+| `enableLegends`          | `boolean`                                                               | Show legend box                                                                                                        |
+| `defaultUniversalSearch` | `{ enable: boolean; onSearch?: (searchText, row, columns) => boolean }` | Built-in search or custom logic                                                                                        |
+| `tableExport`            | `{ enable: boolean; exportFileName?: string }`                          | Enables export options                                                                                                 |
+| `dataTransform`          | `(ctx: { pipeline }) => AnyObject[]`                                    | Chain data transformations                                                                                             |
+| `tableThemeConfig`       | `IntelligentTableThemeConfigType`                                       | Theme customization (legend, searchBox, exportButton etc)                                                              |
+
+All other props from AntD `<Table />` are supported.
 
 ---
 
-## 🧱 Column Configuration
+### 🧮 Summary operations
 
-Each column object can include the following properties:
+- `"sum"` – total
+- `"average"` – mean
+- `"count"` – count
+- `"max"` – max value
+- `"min"` – min value
 
-```js
-{
-  title: 'Column Title',
-  dataIndex: 'fieldName',
-  operation: 'sum', // or 'average', 'count'
-  color: [
-    { min: 0, max: 60, color: 'red' },
-    { value: 'N/A', color: 'gray' }
-  ],
-  filter: [
-    { min: 0, max: 60, effect: true }
-  ],
-  sorted: 'asc', // or 'desc'
-  width: 150,
-}
-```
+Set via `summaryOperation` in column.
 
 ---
 
-## 🛠 Advanced Features
+### 🎨 Legend colors
 
-### 🔁 Smart Sorting
+Add dynamic coloring rules:
 
-- Percentages (`85%`, `90%`)
-- Grades (`K`, `1`, ..., `12`)
-- Weekdays (`Mon`, `Tue`, ...)
-- Dates (various formats)
-- Numbers and text (fallback)
-
-### 🎨 Color Thresholds
-
-```js
-color: [
-  { min: 0, max: 60, color: "#ff4d4f" },
-  { min: 60, max: 80, color: "#faad14" },
-  { min: 80, max: 101, color: "#52c41a" },
+```ts
+colorConfig: [
+  { min: 0, max: 50, color: "red" },
+  { min: 50, max: 100, inclusiveMax: true, color: "green" },
 ];
 ```
 
-### 📤 Data Export
-
-- TSV (Tab-Separated Values) export
-- Clipboard copy with fallback to file download
-- Excel-friendly formatting
-
-### 📊 Summary Row
-
-- Automatic count, sum, average
-- Per-column operation setting
-- Custom title with `summaryTitle` prop
+Set via `colorConfig` in column.
 
 ---
 
-## 🎨 Theming & Customization
+### 📤 Export
 
-### CSS Variables
+Export to:
 
-```css
-:root {
-  --background-color: #ffffff;
-  --text-color: #333333;
-  --chart-background: #fafafa;
-}
-```
+- Excel (xlsx)
+- PDF
+- JSON
+- CSV
+- TSV
 
-### Inline Style Overrides
-
-```jsx
-<IntelligentTable
-  styles={{
-    header: { fontSize: "14px" },
-    cell: { padding: "8px" },
-  }}
-/>
-```
+Enable via `tableExport` prop.
 
 ---
 
-## ⚡ Performance Tips
+## 📜 License
 
-For large datasets (1000+ rows):
-
-- ✅ Use **virtual scrolling**
-- ✅ Set **fixed column widths**
-- ❌ Avoid complex renderers in cells
-- ✅ Enable **pagination** if needed
+MIT © @shridey | Made with ❤️ in Mumbai 🇮🇳
 
 ---
 
-## 🌐 Browser Support
+## ✨ Next: more IntelligentComponents coming soon!
 
-| Browser | Supported        |
-| ------- | ---------------- |
-| Chrome  | ✅ Latest        |
-| Firefox | ✅ Latest        |
-| Safari  | ✅ Latest        |
-| Edge    | ✅ Latest        |
-| IE11    | ❌ Not Supported |
+Stay tuned...
 
 ---
 
-## 🤝 Contributing
-
-Contributions are welcome!  
-Please open an issue to propose changes or features before submitting a pull request.
-
----
-
-## 📄 License
-
-MIT © Shridhar Pandey
+> _Questions, suggestions?_
+> Create an issue or discuss on GitHub! 🚀

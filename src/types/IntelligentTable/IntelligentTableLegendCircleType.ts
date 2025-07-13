@@ -1,3 +1,3 @@
 export type IntelligentTableLegendCircleType = {
-  radius?: number | undefined;
+  radius?: number;
 };
