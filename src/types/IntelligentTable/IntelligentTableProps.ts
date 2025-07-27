@@ -4,6 +4,19 @@ import type { IntelligentTableThemeConfigType } from "@/types/IntelligentTable/I
 import type { AnyObject } from "antd/es/_util/type";
 import type { SummaryProps } from "rc-table/lib/Footer/Summary";
 
+/**
+ * Props for the IntelligentTable component.
+ *
+ * @extends TableProps
+ * @property {IntelligentTableColumnType[]} columns - The columns configuration for the table.
+ * @property {readonly AnyObject[]} dataSource - The data to display in the table.
+ * @property {(ctx: { pipeline: (steps: Array<(data: AnyObject[]) => AnyObject[]>) => AnyObject[] }) => AnyObject[]} [dataTransform] - Function to transform data before rendering, using a composable pipeline.
+ * @property {IntelligentTableThemeConfigType} [tableThemeConfig] - Theme configuration for customizing table appearance.
+ * @property {{ enable?: boolean; fixed?: SummaryProps["fixed"] }} [defaultSummary] - Configuration for the summary row.
+ * @property {boolean} [enableLegends] - Whether to display legends for color rules.
+ * @property {{ enable: boolean; onSearch?: (searchText: string | undefined, row: AnyObject, columns: IntelligentTableColumnType[]) => boolean }} [defaultUniversalSearch] - Universal search configuration and custom search logic.
+ * @property {{ enable: boolean; exportFileName?: string | undefined }} [tableExport] - Export configuration for table data.
+ */
 export interface IntelligentTableProps extends TableProps {
   columns: IntelligentTableColumnType[];
   dataSource: readonly AnyObject[];

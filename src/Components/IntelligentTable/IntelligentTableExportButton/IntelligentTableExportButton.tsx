@@ -1,5 +1,5 @@
 import { Button, Dropdown, type MenuProps } from "antd";
-import ExcelJS from "exceljs";
+import writeXlsxFile from "write-excel-file";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import { saveAs } from "file-saver";
@@ -108,45 +108,27 @@ const exportTable = async (
     }
 
     case "xlsx": {
-      const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet("Sheet1");
-
-      // Add headers
-      worksheet.addRow(headers);
-
-      // Style headers
-      worksheet.getRow(1).font = { bold: true };
-      worksheet.getRow(1).fill = {
-        type: "pattern",
-        pattern: "solid",
-        fgColor: { argb: "FFD3D3D3" },
-      };
-
-      // Add data
-      (data as AnyObject[]).forEach((row) => {
-        const rowData = dataKeys.map((key) => row[key]);
-        worksheet.addRow(rowData);
+      // Convert data to array of objects (if needed)
+      const rows = (data as AnyObject[]).map((row) => {
+        const obj: Record<string, string | number> = {};
+        dataKeys.forEach((key, index) => {
+          obj[headers[index]] = row[key] ?? "";
+        });
+        return obj;
       });
 
-      // Auto-fit columns
-      worksheet.columns = headers.map((_, colIndex) => ({
-        width:
-          Math.max(
-            15, // Minimum width
-            ...(data as AnyObject[]).map((row) => {
-              const value = row[dataKeys[colIndex]];
-              return value ? String(value).length : 0;
-            }),
-            headers[colIndex].length
-          ) + 2, // Add some padding
+      // Define schema (mapping headers to data keys)
+      const schema = headers.map((header) => ({
+        column: header,
+        type: String, // Force all values to strings
+        value: (row: Record<string, string | number>) =>
+          String(row[header] ?? ""),
       }));
 
-      // Generate buffer and save
-      const buffer = await workbook.xlsx.writeBuffer();
-      const blob = new Blob([buffer], {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      await writeXlsxFile(rows, {
+        schema,
+        fileName: generateFileName(fileName || "table-export", "xlsx"),
       });
-      saveAs(blob, generateFileName(fileName || "table-export", "xlsx"));
       break;
     }
 

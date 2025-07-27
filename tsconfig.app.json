@@ -34,5 +34,5 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "src/types"]
+  "include": ["src/index.tsx", "src/types"]
 }

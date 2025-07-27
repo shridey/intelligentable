@@ -1,10 +1,10 @@
 # Intelligentable by @shridey
 
-> I believe that UI can be intelligent, so I select the components from the top UI libraries exists out there, and make them smarter, by adding features that they must have as a component.
+> Intelligentable is a React TypeScript component library built on top of Ant Design, providing advanced, smart, and highly customizable table components for modern web applications.
 
 ---
 
-### 📦 Installation
+## 📦 Installation
 
 ```bash
 npm install @shridey/intelligentable
@@ -14,24 +14,25 @@ npm install @shridey/intelligentable
 
 ## 🧠 IntelligentTable
 
-> The first component of the **Intelligentable** library – built to make your tables not just pretty, but _smart_.
-
-A powerful React TypeScript table component on top of **Ant Design** with important built-in features.
+A powerful React TypeScript table component with essential built-in features for data-rich applications.
 
 ---
 
-### ✨ Features
+## ✨ Features
 
-- 🌈 **Themeable** – fully customize each visual components
-- 📊 **Automatic summary row** – sum, average, count, max, min
-- 🔍 **Universal search** – out of the box or bring your own logic
-- 🎨 **Legend colors** – based on dynamic rules
-- 📤 **Export** – to Excel, PDF, JSON, CSV, TSV
-- 🧩 **Composable** – plug in data transformations
+- 📊 **Automatic Sorting** – Enabled smart sorting by default for numbers, dates, days of week, currencies, percentages, ids and string.
+- 📊 **Automatic Summary Row** – Built-in support for sum, average, count, max, and min operations per column.
+- 🔍 **Universal Search** – Out-of-the-box search across all columns, or plug in your own custom logic.
+- 🧩 **Composable Data Transformation Pipeline** – Chain and compose data transformation steps before rendering.
+- 🎨 **Legends** – Dynamic legend generation based on column color rules, with customizable styles.
+- 📤 **Export** – Export table data to Excel (XLSX), PDF, JSON, CSV, and TSV formats.
+- 🏷️ **Dynamic Cell Coloring** – Apply colors to cells based on value thresholds, string matches, or regex.
+- 🌈 **Themeable** – Fully customize every visual aspect of the table, including legends, summary rows, search box, export buttons, and more.
+- 🛠️ **Type Safety** – All props and features are fully typed for maximum reliability.
 
 ---
 
-### 🚀 Usage
+## 🚀 Quick Start Example
 
 ```tsx
 import { IntelligentTable } from "@shridey/intelligentable";
@@ -80,24 +81,103 @@ export default App;
 
 ---
 
-### ⚙️ Props (extended)
+## ⚙️ Full Props Reference
 
-| Prop                     | Type                                                                    | Description                                                                                                            |
-| ------------------------ | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `columns`                | `IntelligentTableColumnType[]`                                          | Same as AntD, but with extra fields: `roundOff`, `colorConfig`, `summaryOperation`, `displaySummaryOperationInSummary` |
-| `dataSource`             | `readonly AnyObject[]`                                                  | Table data                                                                                                             |
-| `defaultSummary`         | `{ enable?: boolean; fixed?: "top" \| "bottom" }`                       | Enables built-in summary row                                                                                           |
-| `enableLegends`          | `boolean`                                                               | Show legend box                                                                                                        |
-| `defaultUniversalSearch` | `{ enable: boolean; onSearch?: (searchText, row, columns) => boolean }` | Built-in search or custom logic                                                                                        |
-| `tableExport`            | `{ enable: boolean; exportFileName?: string }`                          | Enables export options                                                                                                 |
-| `dataTransform`          | `(ctx: { pipeline }) => AnyObject[]`                                    | Chain data transformations                                                                                             |
-| `tableThemeConfig`       | `IntelligentTableThemeConfigType`                                       | Theme customization (legend, searchBox, exportButton etc)                                                              |
-
-All other props from AntD `<Table />` are supported.
+| Prop                      | Type                                                                    | Description                                                                                                             |
+| ------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `columns`                 | `IntelligentTableColumnType[] (extends AntD's TableColumnType)`         | Table columns, supports extra fields: `roundOff`, `colorConfig`, `summaryOperation`, `displaySummaryOperationInSummary` |
+| `dataSource`              | `readonly AnyObject[] (AntD's)`                                         | Table data                                                                                                              |
+| `defaultSummary`          | `{ enable?: boolean; fixed?: "top" \| "bottom" }`                       | Enables built-in summary row                                                                                            |
+| `enableLegends`           | `boolean`                                                               | Show legend box                                                                                                         |
+| `defaultUniversalSearch`  | `{ enable: boolean; onSearch?: (searchText, row, columns) => boolean }` | Built-in search or custom logic                                                                                         |
+| `tableExport`             | `{ enable: boolean; exportFileName?: string }`                          | Enables export options                                                                                                  |
+| `dataTransform`           | `(ctx: { pipeline }) => AnyObject[]`                                    | Chain data transformations                                                                                              |
+| `tableThemeConfig`        | `IntelligentTableThemeConfigType (Table Theme from AntD's ThemeConfig)` | Theme customization (legend, searchBox, exportButton etc)                                                               |
+| ...other AntD Table props | Supported                                                               | All other props from AntD's `<Table />` are supported                                                                   |
 
 ---
 
-### 🧮 Summary operations
+...
+
+## 🔢 Automatic Smart Sorting
+
+IntelligentTable automatically detects the data type of each column and applies the most appropriate sorting logic:
+
+- **Numbers:** Sorted numerically
+- **Strings:** Sorted alphabetically
+- **Dates:** Sorted chronologically
+- **Day of Week:** Starting from Sunday to Saturday
+- **Currencies, Percentages, IDs:** Sorted by their respective types
+
+**You do not need to specify a sorter manually—IntelligentTable does it for you!**
+
+### Example: Smart Sorting
+
+```tsx
+import { IntelligentTable } from "@shridey/intelligentable";
+import type { IntelligentTableColumnType } from "@shridey/intelligentable";
+
+const columns: IntelligentTableColumnType[] = [
+  {
+    title: "Employee ID",
+    dataIndex: "id",
+    // Smart sorting will sort as numbers
+  },
+  {
+    title: "Name",
+    dataIndex: "name",
+    // Smart sorting will sort alphabetically
+  },
+  {
+    title: "Joining Date",
+    dataIndex: "joiningDate",
+    // Smart sorting will sort by date
+  },
+  {
+    title: "Joining Day",
+    dataIndex: "joiningDay",
+    // Smart sorting will sort by day of week
+  },
+  {
+    title: "Salary",
+    dataIndex: "salary",
+    // Smart sorting will sort numerically
+  },
+];
+
+const dataSource = [
+  { key: 1, id: 101, name: "Alice", joiningDate: "2022-01-15", salary: 40000 },
+  { key: 2, id: 102, name: "Bob", joiningDate: "2021-11-03", salary: 60000 },
+];
+
+<IntelligentTable
+  columns={columns}
+  dataSource={dataSource}
+/>
+```
+
+### Overriding Smart Sorting with a Custom Sorter
+
+If you want to override the automatic sorting for a column, simply provide your own `sorter` function:
+
+```tsx
+const columns: IntelligentTableColumnType[] = [
+  {
+    title: "Name",
+    dataIndex: "name",
+    // Override smart sorting with custom sorter
+    sorter: (a, b) => a.name.length - b.name.length, // Sort by name length
+  },
+  // ...other columns
+];
+```
+
+
+---
+
+## 🧮 Summary Operations
+
+Set via `summaryOperation` in column:
 
 - `"sum"` – total
 - `"average"` – mean
@@ -105,28 +185,55 @@ All other props from AntD `<Table />` are supported.
 - `"max"` – max value
 - `"min"` – min value
 
-Set via `summaryOperation` in column.
+**Example:**
+
+```ts
+{
+  title: "Score",
+  dataIndex: "score",
+  summaryOperation: "average",
+}
+```
 
 ---
 
-### 🎨 Legend colors
+## 🎨 Dynamic Cell Coloring & Legends
 
-Add dynamic coloring rules:
+Add dynamic coloring rules to columns:
 
 ```ts
 colorConfig: [
   { min: 0, max: 50, color: "red" },
   { min: 50, max: 100, inclusiveMax: true, color: "green" },
+  { str: "Pending", color: "orange" },
+  { regEx: "^Error", color: "red" },
 ];
 ```
 
-Set via `colorConfig` in column.
+Legends are automatically generated and displayed when `enableLegends` is true.
 
 ---
 
-### 📤 Export
+## 🔍 Universal Search
 
-Export to:
+Enable built-in search or provide your own logic:
+
+```tsx
+<IntelligentTable
+  defaultUniversalSearch={{
+    enable: true,
+    onSearch: (searchText, row, columns) =>
+      columns.some((col) => String(row[col.dataIndex]).includes(searchText)),
+  }}
+  // ...
+/>
+```
+
+---
+
+## 📤 Export
+
+Export table data to:
 
 - Excel (xlsx)
 - PDF
@@ -134,7 +241,51 @@ Export to:
 - CSV
 - TSV
 
-Enable via `tableExport` prop.
+Enable via `tableExport` prop:
+
+```tsx
+<IntelligentTable
+  tableExport={{ enable: true, exportFileName: "Report" }}
+  // ...
+/>
+```
+
+---
+
+## 🧩 Data Transformation Pipeline
+
+Chain multiple data transformation steps before rendering:
+
+```tsx
+<IntelligentTable
+  dataTransform={({ pipeline }) =>
+    pipeline([
+      (data) => data.filter((row) => row.active),
+      (data) => data.sort((a, b) => a.score - b.score),
+      // ...other transformations
+    ])
+  }
+  // ...
+/>
+```
+
+---
+
+## 🌈 Theme Customization
+
+Customize table appearance via `tableThemeConfig`:
+
+```tsx
+<IntelligentTable
+  tableThemeConfig={{
+    legends: { fontSize: "14px", backgroundColor: "#f0f0f0" },
+    searchBox: { colorText: "#333", placeholderText: "Type to search..." },
+    exportButton: { defaultBg: "#1890ff", defaultColor: "#fff" },
+    defaultSummaryRow: { backgroundColor: "#fafafa", fontWeight: "bold" },
+  }}
+  // ...
+/>
+```
 
 ---
 
@@ -144,11 +295,11 @@ MIT © @shridey | Made with ❤️ in Mumbai 🇮🇳
 
 ---
 
-## ✨ Next: more IntelligentComponents coming soon!
+## ✨ More IntelligentComponents Coming Soon!
 
-Stay tuned...
+Stay tuned for updates and new components.
 
 ---
 
-> _Questions, suggestions?_
-> Create an issue or discuss on GitHub! 🚀
+> _Questions or suggestions?_  
+> Create an issue or start a discussion on [GitHub](https://github.com/shridey/intelligentable/issues)

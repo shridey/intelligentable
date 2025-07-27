@@ -26,6 +26,13 @@ const shortToFull = {
   sat: "saturday",
 };
 
+/**
+ * Parses a date value into a timestamp for sorting.
+ * Supports DD/MM/YYYY, DD/MM/YY, ISO, and long month formats.
+ *
+ * @param {string | number | Date} value - The date value to parse.
+ * @returns {number} The timestamp for sorting.
+ */
 const parseDateForSort = (value: string | number | Date): number => {
   const str = String(value).trim();
 
@@ -43,6 +50,13 @@ const parseDateForSort = (value: string | number | Date): number => {
   return new Date(str).getTime();
 };
 
+/**
+ * Returns a sorter function for a column based on its type.
+ * If a custom sorter is provided, it is used. Otherwise, generates a smart sorter.
+ *
+ * @param {IntelligentTableColumnType} column - The column configuration.
+ * @returns {boolean | CompareFn} The sorter function or boolean.
+ */
 const getSorter = (column: IntelligentTableColumnType): boolean | CompareFn => {
   if (typeof column.sorter === "function" || typeof column.sorter === "boolean")
     return column.sorter as boolean | CompareFn;
@@ -105,6 +119,12 @@ const getSorter = (column: IntelligentTableColumnType): boolean | CompareFn => {
   };
 };
 
+/**
+ * Detects the type of a value for sorting and formatting.
+ *
+ * @param {unknown} value - The value to detect.
+ * @returns {"number" | "id" | "percentage" | "currency" | "date" | "dayOfWeek" | "string"} The detected type.
+ */
 export const detectType = (
   value: unknown
 ):
@@ -178,12 +198,25 @@ export const detectType = (
   return "string";
 };
 
+/**
+ * Formats a number to a fixed number of decimal places.
+ *
+ * @param {number} num - The number to format.
+ * @param {number} decimalPlaces - Number of decimal places.
+ * @returns {string} The formatted string.
+ */
 export const formatValue = (num: number, decimalPlaces: number): string => {
   const factor = Math.pow(10, decimalPlaces);
   const rounded = Math.round((num + Number.EPSILON) * factor) / factor;
   return rounded.toFixed(decimalPlaces);
 };
 
+/**
+ * Enhances columns with smart sorting, rendering, and filtering logic.
+ *
+ * @param {IntelligentTableColumnType[]} columns - The columns to enhance.
+ * @returns {IntelligentTableColumnType[]} The enhanced columns.
+ */
 export const enhanceColumns = (
   columns: IntelligentTableColumnType[]
 ): IntelligentTableColumnType[] => {
@@ -261,6 +294,12 @@ export const enhanceColumns = (
   });
 };
 
+/**
+ * Gets the most frequent symbol from an array of symbols.
+ *
+ * @param {string[]} symbols - Array of symbols.
+ * @returns {string} The most frequent symbol.
+ */
 export const getMostFrequentSymbol = (symbols: string[]): string => {
   const freq: Record<string, number> = {};
 
@@ -273,6 +312,12 @@ export const getMostFrequentSymbol = (symbols: string[]): string => {
   return sorted[0]?.[0] || "";
 };
 
+/**
+ * Parses a value to extract its numeric value and symbol (currency, percentage, etc).
+ *
+ * @param {unknown} value - The value to parse.
+ * @returns {{ number: number | null; symbol: string }} The parsed number and symbol.
+ */
 export const parseNumericValue = (
   value: unknown
 ): { number: number | null; symbol: string } => {
@@ -318,6 +363,12 @@ export const parseNumericValue = (
   return { number: isNaN(num!) ? null : num, symbol };
 };
 
+/**
+ * Recursively flattens columns to get all leaf columns.
+ *
+ * @param {IntelligentTableColumnType[]} columns - The columns to flatten.
+ * @returns {IntelligentTableColumnType[]} Array of leaf columns.
+ */
 export const getLeafColumns = (
   columns: IntelligentTableColumnType[]
 ): IntelligentTableColumnType[] => {
@@ -326,6 +377,13 @@ export const getLeafColumns = (
   );
 };
 
+/**
+ * Gets the value from a row by its dataIndex, supporting nested arrays.
+ *
+ * @param {AnyObject} row - The row object.
+ * @param {DataIndex<AnyObject>} dataIndex - The dataIndex (string, number, or array).
+ * @returns {unknown} The value at the given dataIndex.
+ */
 export function getValueByDataIndex(
   row: AnyObject,
   dataIndex: DataIndex<AnyObject>

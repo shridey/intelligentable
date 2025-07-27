@@ -1,4 +1,4 @@
-import { IntelligentTable } from "./Components/IntelligentTable/IntelligentTable";
+import { IntelligentTable } from "./index";
 import { pivotData } from "./utils/intelligentTable/dataTransformUtils";
 import "./App.css";
 

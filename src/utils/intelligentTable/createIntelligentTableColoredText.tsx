@@ -1,6 +1,13 @@
 import { detectType, parseNumericValue } from "./helperFunctions";
 import type { IntelligentTableColorConfigType } from "@/types/IntelligentTable/IntelligentTableColorConfigType";
 
+/**
+ * Determines the color for a cell value based on provided color configuration rules.
+ *
+ * @param {IntelligentTableColorConfigType[]} configs - Array of color configuration rules.
+ * @param {number | string | null | undefined} value - The cell value to evaluate.
+ * @returns {string | undefined} The color to apply, or undefined if no rule matches.
+ */
 export const getColor = (
   configs: IntelligentTableColorConfigType[],
   value: number | string | null | undefined
@@ -80,6 +87,13 @@ export const getColor = (
   return undefined;
 };
 
+/**
+ * Renders a span element with colored text based on color configuration rules.
+ *
+ * @param {string | number} value - The cell value to display.
+ * @param {IntelligentTableColorConfigType[]} colorConfig - Array of color configuration rules.
+ * @returns {JSX.Element} A span element with the appropriate text color applied.
+ */
 export const createIntelligentTableColoredText = (
   value: string | number,
   colorConfig: IntelligentTableColorConfigType[]
