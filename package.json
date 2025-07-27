@@ -1,6 +1,6 @@
 {
   "name": "@shridey/intelligentable",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "IntelligentTable is a highly customizable, performant, and feature-rich React table component built on top of Ant Design. It offers automatic data type detection, smart sorting, advanced summary rows, color rules, export options, and seamless integration with modern React workflows.",
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
