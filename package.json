@@ -1,6 +1,6 @@
 {
   "name": "@shridey/intelligentable",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "IntelligentTable is a highly customizable, fully-types, performant, and feature-rich React component library built on top of handpicked industry-level production-grade UI Components for modern web applications.",
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
