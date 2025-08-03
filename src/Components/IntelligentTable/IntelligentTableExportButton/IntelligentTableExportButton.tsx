@@ -91,8 +91,6 @@ const registerCustomFont = async (
   } catch (error) {
     console.error(`Failed to load custom font (${fontFileName}):`, error);
     doc.setFont(fallbackFont);
-  } finally {
-    console.log(doc.getFontList());
   }
 };
 
