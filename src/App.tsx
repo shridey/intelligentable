@@ -1,5 +1,6 @@
 import { IntelligentTable } from "./index";
 import { pivotData } from "./utils/intelligentTable/dataTransformUtils";
+import NotoSans from "./assets/fonts/NotoSans-Regular.ttf";
 import "./App.css";
 
 function App() {
@@ -867,6 +868,14 @@ function App() {
       tableExport={{
         enable: true,
         exportFileName: "grades_report",
+        pdfFontOptions: {
+          // Optional
+          fontUrl: NotoSans,
+          fontName: "NotoSans",
+          fontFileName: "NotoSans-Regular.ttf",
+          fontStyles: ["normal", "bold"],
+          fallbackFont: "helvetiva", // Default
+        },
       }}
       scroll={{
         x: 1200,
@@ -886,7 +895,7 @@ function App() {
               rowKey: "grade",
               pivotKey: "month_name",
               valueField: "avg_present_percentage",
-              transformValue: (value) => `${value as number}%`,
+              transformValue: (value) => `₹${value as number}`,
               orderedPivotKeys: monthOrder,
               addAverageField: true,
             }),

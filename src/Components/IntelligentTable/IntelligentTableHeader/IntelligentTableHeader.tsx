@@ -1,7 +1,7 @@
 import { Input } from "antd";
-import { IntelligentTableLegends } from "@/Components/IntelligentTable/IntelligentTableLegends/IntelligentTableLegends";
-import { IntelligentTableExportButton } from "@/Components/IntelligentTable/IntelligentTableExportButton/IntelligentTableExportButton";
-import type { IntelligentTableHeaderProps } from "@/types/IntelligentTable/IntelligentTableHeaderProps";
+import { IntelligentTableLegends } from "../IntelligentTableLegends/IntelligentTableLegends";
+import { IntelligentTableExportButton } from "../IntelligentTableExportButton/IntelligentTableExportButton";
+import type { IntelligentTableHeaderProps } from "../../../types/IntelligentTable/IntelligentTableHeaderProps";
 import { SearchOutlined } from "@ant-design/icons";
 
 export const IntelligentTableHeader = ({
@@ -20,6 +20,13 @@ export const IntelligentTableHeader = ({
   exportButton = {
     enable: false,
     exportFileName: "",
+    pdfFontOptions: {
+      fontUrl: "",
+      fontFileName: "",
+      fontName: "",
+      fontStyles: [],
+      fallbackFont: "",
+    },
   },
 }: IntelligentTableHeaderProps) => {
   return (
@@ -72,6 +79,7 @@ export const IntelligentTableHeader = ({
             data={data}
             columns={columns}
             exportFileName={exportButton.exportFileName}
+            pdfFontOptions={exportButton.pdfFontOptions}
           />
         )}
       </div>

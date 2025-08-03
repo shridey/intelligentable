@@ -1,5 +1,5 @@
-import type { IntelligentTableColumnType } from "@/types/IntelligentTable/IntelligentTableColumnType";
 import type { AnyObject } from "antd/es/_util/type";
+import type { IntelligentTableColumnType } from "./IntelligentTableColumnType";
 
 /**
  * Props for the summary row in IntelligentTable.

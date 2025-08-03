@@ -1,6 +1,6 @@
 # Intelligentable by @shridey
 
-> Intelligentable is a React TypeScript component library built on top of Ant Design, providing advanced, smart, and highly customizable table components for modern web applications.
+> IntelligentTable is a highly customizable, fully-types, performant, and feature-rich React component library built on top of handpicked industry-level production-grade UI Components.
 
 ---
 
@@ -14,7 +14,7 @@ npm install @shridey/intelligentable
 
 ## 🧠 IntelligentTable
 
-A powerful React TypeScript table component with essential built-in features for data-rich applications.
+IntelligentTable is a React TypeScript Table Component built on top of Ant Design, providing advanced, smart, and highly customizable table components for modern web applications.
 
 ---
 
@@ -83,17 +83,17 @@ export default App;
 
 ## ⚙️ Full Props Reference
 
-| Prop                      | Type                                                                    | Description                                                                                                             |
-| ------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `columns`                 | `IntelligentTableColumnType[] (extends AntD's TableColumnType)`         | Table columns, supports extra fields: `roundOff`, `colorConfig`, `summaryOperation`, `displaySummaryOperationInSummary` |
-| `dataSource`              | `readonly AnyObject[] (AntD's)`                                         | Table data                                                                                                              |
-| `defaultSummary`          | `{ enable?: boolean; fixed?: "top" \| "bottom" }`                       | Enables built-in summary row                                                                                            |
-| `enableLegends`           | `boolean`                                                               | Show legend box                                                                                                         |
-| `defaultUniversalSearch`  | `{ enable: boolean; onSearch?: (searchText, row, columns) => boolean }` | Built-in search or custom logic                                                                                         |
-| `tableExport`             | `{ enable: boolean; exportFileName?: string }`                          | Enables export options                                                                                                  |
-| `dataTransform`           | `(ctx: { pipeline }) => AnyObject[]`                                    | Chain data transformations                                                                                              |
-| `tableThemeConfig`        | `IntelligentTableThemeConfigType (Table Theme from AntD's ThemeConfig)` | Theme customization (legend, searchBox, exportButton etc)                                                               |
-| ...other AntD Table props | Supported                                                               | All other props from AntD's `<Table />` are supported                                                                   |
+| Prop                      | Type                                                                                                          | Description                                                                                                             |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `columns`                 | `IntelligentTableColumnType[] (extends AntD's TableColumnType)`                                               | Table columns, supports extra fields: `roundOff`, `colorConfig`, `summaryOperation`, `displaySummaryOperationInSummary` |
+| `dataSource`              | `readonly AnyObject[] (AntD's)`                                                                               | Table data                                                                                                              |
+| `defaultSummary`          | `{ enable?: boolean; fixed?: "top" \| "bottom" }`                                                             | Enables built-in summary row                                                                                            |
+| `enableLegends`           | `boolean`                                                                                                     | Show legend box                                                                                                         |
+| `defaultUniversalSearch`  | `{ enable: boolean; onSearch?: (searchText, row, columns) => boolean }`                                       | Built-in search or custom logic                                                                                         |
+| `tableExport`             | `{ enable: boolean; exportFileName?: string; pdfFontOptions?: IntelligentTableExportButtonPDFFontOptionsType` | Enables export options                                                                                                  |
+| `dataTransform`           | `(ctx: { pipeline }) => AnyObject[]`                                                                          | Chain data transformations                                                                                              |
+| `tableThemeConfig`        | `IntelligentTableThemeConfigType (Table Theme from AntD's ThemeConfig)`                                       | Theme customization (legend, searchBox, exportButton etc)                                                               |
+| ...other AntD Table props | Supported                                                                                                     | All other props from AntD's `<Table />` are supported                                                                   |
 
 ---
 
@@ -244,8 +244,22 @@ Export table data to:
 Enable via `tableExport` prop:
 
 ```tsx
+import NotoSans from "@/assets/fonts/NotoSans-Regular.ttf";
+
 <IntelligentTable
-  tableExport={{ enable: true, exportFileName: "Report" }}
+  tableExport={
+    {
+      enable: true,
+      exportFileName: "Report",
+      pdfFontOptions: { // Optional
+        fontUrl: NotoSans,
+        fontName: "NotoSans",
+        fontFileName: "NotoSans-Regular.ttf",
+        fontStyles: ["normal", "bold"],
+        fallbackFont: "helvetiva" // Default
+      }
+    }
+  }
   // ...
 />
 ```

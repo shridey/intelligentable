@@ -1,6 +1,12 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import pkg from "./package.json";
+
+const peerDeps = Object.keys(pkg.peerDependencies || {});
+const external = (id: string) =>
+  peerDeps.some((dep) => id === dep || id.startsWith(`${dep}/`)) ||
+  id === "react/jsx-runtime";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -14,24 +20,13 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, "src/index.tsx"),
       name: "intelligentable",
-      formats: ["es", "umd"],
+      formats: ["es", "umd", "cjs"],
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
-      // Add all peer dependencies here
-      external: [
-        "react",
-        "react-dom",
-        "antd",
-        "@ant-design/icons",
-        "write-excel-file",
-        "file-saver",
-        "jspdf",
-        "jspdf-autotable",
-      ],
+      external,
       output: {
         globals: {
-          // Define global variable names for UMD build
           react: "React",
           "react-dom": "ReactDOM",
           antd: "antd",
@@ -40,6 +35,7 @@ export default defineConfig({
           "file-saver": "saveAs",
           jspdf: "jsPDF",
           "jspdf-autotable": "jsPDFAutoTable",
+          "react/jsx-runtime": "jsxRuntime",
         },
       },
     },

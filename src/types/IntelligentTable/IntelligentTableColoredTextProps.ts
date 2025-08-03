@@ -1,4 +1,4 @@
-import type { IntelligentTableColorConfigType } from "@/types/IntelligentTable/IntelligentTableColorConfigType";
+import type { IntelligentTableColorConfigType } from "./IntelligentTableColorConfigType";
 
 /**
  * Props for rendering colored text in IntelligentTable cells.

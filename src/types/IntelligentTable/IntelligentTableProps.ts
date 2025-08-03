@@ -1,8 +1,9 @@
 import type { TableProps } from "antd";
-import type { IntelligentTableColumnType } from "@/types/IntelligentTable/IntelligentTableColumnType";
-import type { IntelligentTableThemeConfigType } from "@/types/IntelligentTable/IntelligentTableThemeConfigType";
 import type { AnyObject } from "antd/es/_util/type";
 import type { SummaryProps } from "rc-table/lib/Footer/Summary";
+import type { IntelligentTableColumnType } from "./IntelligentTableColumnType";
+import type { IntelligentTableThemeConfigType } from "./IntelligentTableThemeConfigType";
+import type { IntelligentTableExportButtonPDFFontOptionsType } from "./IntelligentTableExportButtonPDFFontOptionsType";
 
 /**
  * Props for the IntelligentTable component.
@@ -16,6 +17,7 @@ import type { SummaryProps } from "rc-table/lib/Footer/Summary";
  * @property {boolean} [enableLegends] - Whether to display legends for color rules.
  * @property {{ enable: boolean; onSearch?: (searchText: string | undefined, row: AnyObject, columns: IntelligentTableColumnType[]) => boolean }} [defaultUniversalSearch] - Universal search configuration and custom search logic.
  * @property {{ enable: boolean; exportFileName?: string | undefined }} [tableExport] - Export configuration for table data.
+ * @property {IntelligentTableExportButtonPDFFontOptionsType} tableExport.pdfFontOptions - Optional font options for exporting PDF.
  */
 export interface IntelligentTableProps extends TableProps {
   columns: IntelligentTableColumnType[];
@@ -40,5 +42,6 @@ export interface IntelligentTableProps extends TableProps {
   tableExport?: {
     enable: boolean;
     exportFileName?: string | undefined;
+    pdfFontOptions?: IntelligentTableExportButtonPDFFontOptionsType;
   };
 }

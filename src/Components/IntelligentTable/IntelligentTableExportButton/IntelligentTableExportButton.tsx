@@ -3,10 +3,10 @@ import writeXlsxFile from "write-excel-file";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import { saveAs } from "file-saver";
-import type { IntelligentTableExportButtonProps } from "@/types/IntelligentTable/IntelligentTableExportButtonProps";
-import type { IntelligentTableColumnType } from "@/types/IntelligentTable/IntelligentTableColumnType";
 import type { AnyObject } from "antd/es/_util/type";
-import NotoSansFont from "@/assets/fonts/NotoSans-Regular.ttf";
+import type { IntelligentTableExportButtonProps } from "../../../types/IntelligentTable/IntelligentTableExportButtonProps";
+import type { IntelligentTableColumnType } from "../../../types/IntelligentTable/IntelligentTableColumnType";
+import type { IntelligentTableExportButtonPDFFontOptionsType } from "../../../types/IntelligentTable/IntelligentTableExportButtonPDFFontOptionsType";
 import {
   DownloadOutlined,
   FileExcelOutlined,
@@ -53,28 +53,46 @@ const exportDelimited = (
   return [headers.join(delimiter), ...rows].join("\n");
 };
 
-const registerNotoSansFont = async (doc: jsPDF) => {
-  try {
-    // 1. Fetch the font file
-    const response = await fetch(NotoSansFont);
-    const fontBlob = await response.blob();
+const registerCustomFont = async (
+  doc: jsPDF,
+  options: {
+    fontUrl?: string;
+    fontFileName?: string;
+    fontName?: string;
+    fontStyles?: string[];
+    fallbackFont?: string;
+  } = {}
+) => {
+  const {
+    fontUrl,
+    fontFileName = "",
+    fontName = "",
+    fontStyles = [],
+    fallbackFont = "helvetica",
+  } = options;
 
-    // 2. Read as base64
+  if (!fontUrl) {
+    doc.setFont(fallbackFont);
+    return;
+  }
+  try {
+    const response = await fetch(fontUrl);
+    const fontBlob = await response.blob();
     const base64Font = await new Promise<string>((resolve) => {
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result as string);
       reader.readAsDataURL(fontBlob);
-    }).then((dataUrl) => dataUrl.split(",")[1]); // Extract base64 part
-
-    // 3. Register the font
-    doc.addFileToVFS("NotoSans-Regular.ttf", base64Font);
-    doc.addFont("NotoSans-Regular.ttf", "NotoSans", "normal");
-    doc.addFont("NotoSans-Regular.ttf", "NotoSans", "bold");
-    doc.setFont("NotoSans");
+    }).then((dataUrl) => dataUrl.split(",")[1]);
+    doc.addFileToVFS(fontFileName, base64Font);
+    fontStyles.forEach((style) => {
+      doc.addFont(fontFileName, fontName, style);
+    });
+    doc.setFont(fontName);
   } catch (error) {
-    console.error("Failed to load NotoSans font:", error);
-    // Fallback to standard font
-    doc.setFont("helvetica");
+    console.error(`Failed to load custom font (${fontFileName}):`, error);
+    doc.setFont(fallbackFont);
+  } finally {
+    console.log(doc.getFontList());
   }
 };
 
@@ -82,7 +100,8 @@ const exportTable = async (
   data: readonly AnyObject[] | undefined,
   columns: IntelligentTableColumnType[],
   format: "csv" | "tsv" | "xlsx" | "json" | "pdf",
-  fileName: string
+  fileName: string,
+  pdfFontOptions?: IntelligentTableExportButtonPDFFontOptionsType
 ): Promise<void> => {
   const visibleColumns = columns.filter((col) => col.title);
   const headers = visibleColumns.map((col) => col.title as string);
@@ -162,21 +181,21 @@ const exportTable = async (
 
       const doc = new jsPDF({ orientation: "landscape" });
 
-      await registerNotoSansFont(doc);
+      await registerCustomFont(doc, pdfFontOptions);
 
       // Use the directly imported autoTable function
       autoTable(doc, {
         head: [headers],
         body: pdfData,
         styles: {
-          font: "NotoSans",
+          font: pdfFontOptions?.fontName,
           fontSize: 8,
           cellPadding: 2,
           overflow: "linebreak",
         },
         headStyles: {
-          fillColor: [70, 130, 180], // Steel blue
-          textColor: 255, // White text
+          fillColor: [70, 130, 180],
+          textColor: 255,
           fontStyle: "bold",
         },
         margin: { top: 10 },
@@ -192,13 +211,21 @@ export const IntelligentTableExportButton = ({
   data = [],
   columns = [],
   exportFileName = "",
+  pdfFontOptions = {
+    fontUrl: "",
+    fontFileName: "",
+    fontName: "",
+    fontStyles: [],
+    fallbackFont: "helvetica",
+  },
 }: IntelligentTableExportButtonProps) => {
   const handleMenuClick = (key: string) => {
     exportTable(
       data,
       columns,
       key as "csv" | "tsv" | "xlsx" | "json" | "pdf",
-      exportFileName
+      exportFileName,
+      pdfFontOptions
     );
   };
 

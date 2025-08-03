@@ -1,14 +1,14 @@
 import { useState, useMemo } from "react";
 import { Table, ConfigProvider } from "antd";
-import { IntelligentTableHeader } from "@/Components/IntelligentTable/IntelligentTableHeader/IntelligentTableHeader";
-import { IntelligentTableSummary } from "@/Components/IntelligentTable/IntelligentTableSummary/IntelligentTableSummary";
+import { IntelligentTableHeader } from "./IntelligentTableHeader/IntelligentTableHeader";
+import { IntelligentTableSummary } from "./IntelligentTableSummary/IntelligentTableSummary";
 import {
   enhanceColumns,
   getLeafColumns,
   getValueByDataIndex,
-} from "@/utils/intelligentTable/helperFunctions";
-import { transformPipeline } from "@/utils/intelligentTable/dataTransformUtils";
-import type { IntelligentTableProps } from "@/types/IntelligentTable/IntelligentTableProps";
+} from "../../utils/intelligentTable/helperFunctions";
+import { transformPipeline } from "../../utils/intelligentTable/dataTransformUtils";
+import type { IntelligentTableProps } from "../../types/IntelligentTable/IntelligentTableProps";
 
 export const IntelligentTable = ({
   columns = [],
@@ -33,6 +33,13 @@ export const IntelligentTable = ({
   tableExport = {
     enable: false,
     exportFileName: "",
+    pdfFontOptions: {
+      fontUrl: "",
+      fontFileName: "",
+      fontName: "",
+      fontStyles: [],
+      fallbackFont: "",
+    },
   },
   ...props
 }: IntelligentTableProps) => {
@@ -127,6 +134,7 @@ export const IntelligentTable = ({
           exportButton={{
             enable: tableExport.enable,
             exportFileName: tableExport.exportFileName,
+            pdfFontOptions: tableExport.pdfFontOptions,
           }}
         />
         <Table

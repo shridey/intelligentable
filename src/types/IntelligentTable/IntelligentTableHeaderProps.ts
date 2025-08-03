@@ -1,6 +1,7 @@
-import type { IntelligentTableColumnType } from "@/types/IntelligentTable/IntelligentTableColumnType";
-import type { IntelligentTableLegendStyleType } from "@/types/IntelligentTable/IntelligentTableLegendStyleType";
 import type { AnyObject } from "antd/es/_util/type";
+import type { IntelligentTableColumnType } from "./IntelligentTableColumnType";
+import type { IntelligentTableLegendStyleType } from "./IntelligentTableLegendStyleType";
+import type { IntelligentTableExportButtonPDFFontOptionsType } from "./IntelligentTableExportButtonPDFFontOptionsType";
 
 /**
  * Props for the IntelligentTable header component.
@@ -18,6 +19,7 @@ import type { AnyObject } from "antd/es/_util/type";
  * @property {Object} exportButton - Export button configuration.
  * @property {boolean} exportButton.enable - Whether export is enabled.
  * @property {string | undefined} exportButton.exportFileName - File name for exported data.
+ * @property {IntelligentTableExportButtonPDFFontOptionsType} exportButton.pdfFontOptions - Optional font options for exporting PDF.
  */
 export type IntelligentTableHeaderProps = {
   columns: IntelligentTableColumnType[];
@@ -35,5 +37,6 @@ export type IntelligentTableHeaderProps = {
   exportButton: {
     enable: boolean;
     exportFileName: string | undefined;
+    pdfFontOptions?: IntelligentTableExportButtonPDFFontOptionsType;
   };
 };

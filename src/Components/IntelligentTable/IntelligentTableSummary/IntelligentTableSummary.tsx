@@ -4,12 +4,12 @@ import {
   formatValue,
   getMostFrequentSymbol,
   parseNumericValue,
-} from "@/utils/intelligentTable/helperFunctions";
-import { getColor } from "@/utils/intelligentTable/createIntelligentTableColoredText";
-import type { IntelligentTableSummaryProps } from "@/types/IntelligentTable/IntelligentTableSummaryProps";
-import type { IntelligentTableColumnType } from "@/types/IntelligentTable/IntelligentTableColumnType";
-import type { IntelligentTableColorConfigType } from "@/types/IntelligentTable/IntelligentTableColorConfigType";
+} from "../../../utils/intelligentTable/helperFunctions";
+import { getColor } from "../../../utils/intelligentTable/createIntelligentTableColoredText";
 import type { AnyObject } from "antd/es/_util/type";
+import type { IntelligentTableSummaryProps } from "../../../types/IntelligentTable/IntelligentTableSummaryProps";
+import type { IntelligentTableColumnType } from "../../../types/IntelligentTable/IntelligentTableColumnType";
+import type { IntelligentTableColorConfigType } from "../../../types/IntelligentTable/IntelligentTableColorConfigType";
 
 const computeSummary = (
   data: readonly AnyObject[] | undefined,

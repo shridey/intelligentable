@@ -1,5 +1,5 @@
-import type { IntelligentTableColumnType } from "@/types/IntelligentTable/IntelligentTableColumnType";
-import type { IntelligentTableLegendStyleType } from "@/types/IntelligentTable/IntelligentTableLegendStyleType";
+import type { IntelligentTableColumnType } from "./IntelligentTableColumnType";
+import type { IntelligentTableLegendStyleType } from "./IntelligentTableLegendStyleType";
 
 /**
  * Props for rendering legends in IntelligentTable.

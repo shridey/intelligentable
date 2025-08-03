@@ -1,7 +1,7 @@
-import type { IntelligentTableLegendsProps } from "@/types/IntelligentTable/IntelligentTableLegendsProps";
-import type { IntelligentTableColumnType } from "@/types/IntelligentTable/IntelligentTableColumnType";
-import type { IntelligentTableLegendType } from "@/types/IntelligentTable/IntelligentTableLegendType";
-import type { IntelligentTableColorConfigType } from "@/types/IntelligentTable/IntelligentTableColorConfigType";
+import type { IntelligentTableLegendsProps } from "../../../types/IntelligentTable/IntelligentTableLegendsProps";
+import type { IntelligentTableColumnType } from "../../../types/IntelligentTable/IntelligentTableColumnType";
+import type { IntelligentTableLegendType } from "../../../types/IntelligentTable/IntelligentTableLegendType";
+import type { IntelligentTableColorConfigType } from "../../../types/IntelligentTable/IntelligentTableColorConfigType";
 
 const extractLegends = (
   columns: IntelligentTableColumnType[]

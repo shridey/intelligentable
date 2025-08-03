@@ -1,5 +1,5 @@
 import type { TableColumnType } from "antd";
-import type { IntelligentTableColorConfigType } from "@/types/IntelligentTable/IntelligentTableColorConfigType";
+import type { IntelligentTableColorConfigType } from "./IntelligentTableColorConfigType";
 
 /**
  * Extended column type for IntelligentTable.
