@@ -1,10 +1,10 @@
+import { useState, useMemo } from "react";
 import { Button, Checkbox, Input } from "antd";
 import type { FilterDropdownProps } from "antd/es/table/interface";
-import { useState, useMemo } from "react";
 
 type FilterOption = { text: string; value: string | number };
 
-export const createTableFilterDropdown = (
+export const createIntelligentTableFilterDropdown = (
   filters: FilterOption[],
   filterSearch?: boolean
 ) => {

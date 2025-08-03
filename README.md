@@ -1,6 +1,6 @@
 # Intelligentable by @shridey
 
-> IntelligentTable is a highly customizable, fully-types, performant, and feature-rich React component library built on top of handpicked industry-level production-grade UI Components.
+> Intelligentable is a highly customizable, fully-types, performant, and feature-rich React component library built on top of handpicked industry-level production-grade UI Components for modern web applications.
 
 ---
 
@@ -14,7 +14,7 @@ npm install @shridey/intelligentable
 
 ## 🧠 IntelligentTable
 
-IntelligentTable is a React TypeScript Table Component built on top of Ant Design, providing advanced, smart, and highly customizable table components for modern web applications.
+IntelligentTable is a Modern React TypeScript Table Component built on top of Ant Design, providing advanced, smart, and highly customizable table component.
 
 ---
 

@@ -1,5 +1,5 @@
 import { detectType, parseNumericValue } from "./helperFunctions";
-import type { IntelligentTableColorConfigType } from "@/types/IntelligentTable/IntelligentTableColorConfigType";
+import type { IntelligentTableColorConfigType } from "../../types/IntelligentTable/IntelligentTableColorConfigType";
 
 /**
  * Determines the color for a cell value based on provided color configuration rules.

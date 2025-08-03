@@ -1,8 +1,8 @@
-import type { CompareFn } from "antd/es/table/interface";
 import { createIntelligentTableColoredText } from "./createIntelligentTableColoredText";
-import type { IntelligentTableColumnType } from "@/types/IntelligentTable/IntelligentTableColumnType";
+import type { CompareFn } from "antd/es/table/interface";
 import type { AnyObject } from "antd/es/_util/type";
 import type { DataIndex } from "rc-table/lib/interface";
+import type { IntelligentTableColumnType } from "../../types/IntelligentTable/IntelligentTableColumnType";
 
 const shortWeekdays = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
 
