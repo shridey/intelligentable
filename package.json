@@ -20,7 +20,8 @@
       "@semantic-release/release-notes-generator",
       "@semantic-release/changelog",
       "@semantic-release/npm",
-      "@semantic-release/github"
+      "@semantic-release/github",
+      "@semantic-release/git"
     ],
     "repositoryUrl": "https://github.com/shridey/intelligentable"
   },
@@ -86,10 +87,7 @@
   "devDependencies": {
     "@eslint/js": "^9.32.0",
     "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/exec": "^7.1.0",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^11.0.3",
-    "@semantic-release/npm": "^12.0.2",
     "@types/file-saver": "^2.0.7",
     "@types/node": "^24.2.1",
     "@types/react": "^19.1.9",

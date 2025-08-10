@@ -10,6 +10,10 @@
 npm install @shridey/intelligentable
 ```
 
+## Changelog
+
+See the [CHANGELOG](./CHANGELOG.md) for all updates and release notes.
+
 ---
 
 ## 🧠 IntelligentTable
