@@ -3,9 +3,12 @@ import { Table, ConfigProvider } from "antd";
 import { IntelligentTableHeader } from "./IntelligentTableHeader/IntelligentTableHeader";
 import { IntelligentTableSummary } from "./IntelligentTableSummary/IntelligentTableSummary";
 import {
+  detectType,
   enhanceColumns,
+  formatValue,
   getLeafColumns,
   getValueByDataIndex,
+  parseNumericValue,
 } from "../../utils/intelligentTable/helperFunctions";
 import { transformPipeline } from "../../utils/intelligentTable/dataTransformUtils";
 import type { IntelligentTableProps } from "../../types/IntelligentTable/IntelligentTableProps";
@@ -65,7 +68,7 @@ export const IntelligentTable = ({
 
     return transformedData?.filter((row) => {
       if (defaultUniversalSearch.onSearch) {
-        return defaultUniversalSearch.onSearch(searchText, row, leafColumns);
+        return defaultUniversalSearch.onSearch(search, row, leafColumns);
       }
       return leafColumns.some((column) => {
         const dataIndex = column.dataIndex;
@@ -74,14 +77,27 @@ export const IntelligentTable = ({
         const value = getValueByDataIndex(row, dataIndex);
         if (value == null) return false;
 
-        let stringValue: string | null = null;
+        let stringValue: string | null | undefined = null;
 
-        if (
-          typeof value === "string" ||
-          typeof value === "number" ||
-          typeof value === "boolean"
-        ) {
+        const valueType = detectType(value);
+
+        if (valueType === "string" || typeof value === "boolean") {
           stringValue = String(value);
+        } else if (
+          valueType === "number" ||
+          valueType === "currency" ||
+          valueType === "id" ||
+          valueType === "percentage" ||
+          typeof value === "number"
+        ) {
+          const parsed = parseNumericValue(value);
+          if (parsed.number !== null) {
+            stringValue = `${valueType === "currency" ? parsed.symbol : ""}${
+              column.roundOff
+                ? formatValue(parsed.number, column.roundOff)
+                : parsed.number
+            }${valueType !== "currency" ? parsed.symbol : ""}`;
+          }
         } else if (Array.isArray(value)) {
           stringValue = value.map((v) => String(v)).join(", ");
         } else if (value instanceof Date) {

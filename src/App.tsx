@@ -895,7 +895,10 @@ function App() {
               rowKey: "grade",
               pivotKey: "month_name",
               valueField: "avg_present_percentage",
-              transformValue: (value) => `₹${value as number}`,
+              transformValue: (value) =>
+                (value as number) > 93
+                  ? `${value as number}%`
+                  : `₹${value as number}`,
               orderedPivotKeys: monthOrder,
               addAverageField: true,
             }),
