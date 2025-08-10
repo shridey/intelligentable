@@ -11,17 +11,24 @@
         "changelogFile": "CHANGELOG.md"
       }
     ],
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "npm run build"
+      }
+    ],
     "@semantic-release/npm",
     [
-      "@semantic-release/github",
+      "@semantic-release/git",
       {
         "assets": [
-          "dist/**"
+          "CHANGELOG.md",
+          "package.json",
+          "dist/**/*"
         ],
         "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
     ],
-    "@semantic-release/git"
-  ],
-  "preset": "angular"
+    "@semantic-release/github"
+  ]
 }
