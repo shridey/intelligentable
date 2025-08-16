@@ -1,19 +1,6 @@
 import type { ThemeConfig } from "antd";
 import type { IntelligentTableLegendStyleType } from "./IntelligentTableLegendStyleType";
 
-interface IntelligentTableSearchInputStyle
-  extends Pick<
-    NonNullable<NonNullable<ThemeConfig["components"]>["Input"]>,
-    | "colorText"
-    | "colorBorder"
-    | "activeBg"
-    | "activeBorderColor"
-    | "hoverBg"
-    | "hoverBorderColor"
-  > {
-  placeholderText?: string | undefined;
-}
-
 /**
  * Theme configuration for customizing the appearance of IntelligentTable components.
  *
@@ -31,7 +18,15 @@ export interface IntelligentTableThemeConfigType
     "color" | "backgroundColor" | "fontWeight"
   >;
   legends?: IntelligentTableLegendStyleType;
-  searchBox?: IntelligentTableSearchInputStyle;
+  searchBox?: Pick<
+    NonNullable<NonNullable<ThemeConfig["components"]>["Input"]>,
+    | "colorText"
+    | "colorBorder"
+    | "activeBg"
+    | "activeBorderColor"
+    | "hoverBg"
+    | "hoverBorderColor"
+  >;
   exportButton?: Pick<
     NonNullable<NonNullable<ThemeConfig["components"]>["Button"]>,
     | "defaultBg"

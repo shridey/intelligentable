@@ -29,8 +29,9 @@ export const IntelligentTable = ({
     fixed: false,
   },
   enableLegends = false,
-  defaultUniversalSearch = {
+  search = {
     enable: false,
+    placeholder: "Search table...",
     onSearch: () => false,
   },
   tableExport = {
@@ -63,12 +64,12 @@ export const IntelligentTable = ({
   }, [dataSource, dataTransform]);
 
   const filteredData = useMemo(() => {
-    const search = searchText.trim().toLowerCase();
-    if (!search) return transformedData;
+    const trimmedSearchText = searchText.trim().toLowerCase();
+    if (!trimmedSearchText) return transformedData;
 
     return transformedData?.filter((row) => {
-      if (defaultUniversalSearch.onSearch) {
-        return defaultUniversalSearch.onSearch(search, row, leafColumns);
+      if (search.onSearch) {
+        return search.onSearch(trimmedSearchText, row, leafColumns);
       }
       return leafColumns.some((column) => {
         const dataIndex = column.dataIndex;
@@ -110,10 +111,10 @@ export const IntelligentTable = ({
           }
         }
 
-        return stringValue?.toLowerCase().includes(search) ?? false;
+        return stringValue?.toLowerCase().includes(trimmedSearchText) ?? false;
       });
     });
-  }, [defaultUniversalSearch, searchText, transformedData, leafColumns]);
+  }, [search, searchText, transformedData, leafColumns]);
 
   return (
     <ConfigProvider
@@ -140,12 +141,11 @@ export const IntelligentTable = ({
             enable: enableLegends,
             style: tableThemeConfig?.legends || {},
           }}
-          defaultUniversalSearch={{
-            enable: defaultUniversalSearch.enable,
+          search={{
+            enable: search.enable,
             searchText: searchText,
             setSearchText: setSearchText,
-            searchBoxPlaceholderText:
-              tableThemeConfig?.searchBox?.placeholderText || "Search table...",
+            placeholder: search.placeholder || "Search table...",
           }}
           exportButton={{
             enable: tableExport.enable,

@@ -71,7 +71,7 @@ function App() {
       dataSource={dataSource}
       defaultSummary={{ enable: true, fixed: "bottom" }}
       enableLegends
-      defaultUniversalSearch={{ enable: true }}
+      search={{ enable: true }}
       tableExport={{ enable: true, exportFileName: "MyTable" }}
       tableThemeConfig={{
         legends: { fontSize: "12px" },
@@ -93,7 +93,7 @@ export default App;
 | `dataSource`              | `readonly AnyObject[] (AntD's)`                                                                               | Table data                                                                                                              |
 | `defaultSummary`          | `{ enable?: boolean; fixed?: "top" \| "bottom" }`                                                             | Enables built-in summary row                                                                                            |
 | `enableLegends`           | `boolean`                                                                                                     | Show legend box                                                                                                         |
-| `defaultUniversalSearch`  | `{ enable: boolean; onSearch?: (searchText, row, columns) => boolean }`                                       | Built-in search or custom logic                                                                                         |
+| `search`  | `{ enable: boolean; placeholder: string; onSearch?: (searchText, row, columns) => boolean }`                                       | Built-in search or custom logic                                                                                         |
 | `tableExport`             | `{ enable: boolean; exportFileName?: string; pdfFontOptions?: IntelligentTableExportButtonPDFFontOptionsType` | Enables export options                                                                                                  |
 | `dataTransform`           | `(ctx: { pipeline }) => AnyObject[]`                                                                          | Chain data transformations                                                                                              |
 | `tableThemeConfig`        | `IntelligentTableThemeConfigType (Table Theme from AntD's ThemeConfig)`                                       | Theme customization (legend, searchBox, exportButton etc)                                                               |

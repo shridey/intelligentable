@@ -11,11 +11,11 @@ export const IntelligentTableHeader = ({
     enable: false,
     style: {},
   },
-  defaultUniversalSearch = {
+  search = {
     enable: false,
     searchText: "",
     setSearchText: (v) => v,
-    searchBoxPlaceholderText: "Search table...",
+    placeholder: "Search table...",
   },
   exportButton = {
     enable: false,
@@ -30,9 +30,7 @@ export const IntelligentTableHeader = ({
   },
 }: IntelligentTableHeaderProps) => {
   return (
-    (legends.enable ||
-      defaultUniversalSearch.enable ||
-      exportButton.enable) && (
+    (legends.enable || search.enable || exportButton.enable) && (
       <div
         style={{
           display: "flex",
@@ -50,9 +48,9 @@ export const IntelligentTableHeader = ({
           />
         )}
 
-        {defaultUniversalSearch.enable &&
-          defaultUniversalSearch.searchText !== undefined &&
-          defaultUniversalSearch.setSearchText && (
+        {search.enable &&
+          search.searchText !== undefined &&
+          search.setSearchText && (
             <div
               style={{
                 flex: 1,
@@ -63,11 +61,9 @@ export const IntelligentTableHeader = ({
                 style={{
                   width: "100%",
                 }}
-                placeholder={defaultUniversalSearch.searchBoxPlaceholderText}
-                value={defaultUniversalSearch.searchText}
-                onChange={(e) =>
-                  defaultUniversalSearch.setSearchText(e.target.value)
-                }
+                placeholder={search.placeholder || "Search table..."}
+                value={search.searchText}
+                onChange={(e) => search.setSearchText(e.target.value)}
                 size="middle"
                 suffix={<SearchOutlined />}
               />

@@ -15,7 +15,7 @@ import type { IntelligentTableExportButtonPDFFontOptionsType } from "./Intellige
  * @property {IntelligentTableThemeConfigType} [tableThemeConfig] - Theme configuration for customizing table appearance.
  * @property {{ enable?: boolean; fixed?: SummaryProps["fixed"] }} [defaultSummary] - Configuration for the summary row.
  * @property {boolean} [enableLegends] - Whether to display legends for color rules.
- * @property {{ enable: boolean; onSearch?: (searchText: string | undefined, row: AnyObject, columns: IntelligentTableColumnType[]) => boolean }} [defaultUniversalSearch] - Universal search configuration and custom search logic.
+ * @property {{ enable: boolean; placeholder: string; onSearch?: (searchText: string | undefined, row: AnyObject, columns: IntelligentTableColumnType[]) => boolean }} [search] - Universal search configuration and custom search logic.
  * @property {{ enable: boolean; exportFileName?: string | undefined }} [tableExport] - Export configuration for table data.
  * @property {IntelligentTableExportButtonPDFFontOptionsType} tableExport.pdfFontOptions - Optional font options for exporting PDF.
  */
@@ -31,8 +31,9 @@ export interface IntelligentTableProps extends TableProps {
     fixed?: SummaryProps["fixed"];
   };
   enableLegends?: boolean;
-  defaultUniversalSearch?: {
+  search?: {
     enable: boolean;
+    placeholder?: string;
     onSearch?: (
       searchText: string | undefined,
       row: AnyObject,
