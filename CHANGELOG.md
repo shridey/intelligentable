@@ -1,3 +1,10 @@
+## [2.0.14](https://github.com/shridey/intelligentable/compare/v2.0.13...v2.0.14) (2025-08-16)
+
+
+### Bug Fixes
+
+* force patch release ([939b0a8](https://github.com/shridey/intelligentable/commit/939b0a8f9d16e340f206816a347ab2602390592b))
+
 ## [2.0.12](https://github.com/shridey/intelligentable/compare/v2.0.11...v2.0.12) (2025-08-16)
 
 
