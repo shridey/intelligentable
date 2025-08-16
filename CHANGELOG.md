@@ -1,3 +1,11 @@
+## [2.0.15](https://github.com/shridey/intelligentable/compare/v2.0.14...v2.0.15) (2025-08-16)
+
+
+### Bug Fixes
+
+* test release ([092e2ad](https://github.com/shridey/intelligentable/commit/092e2ad67b4210820660da0b7ea0eaab842c954c))
+* test release ([9639db6](https://github.com/shridey/intelligentable/commit/9639db6812da2028d4c9fc078b775758c1a0105a))
+
 ## [2.0.14](https://github.com/shridey/intelligentable/compare/v2.0.13...v2.0.14) (2025-08-16)
 
 
