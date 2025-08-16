@@ -1,5 +1,6 @@
 {
   "name": "@shridey/intelligentable",
+  "version": "2.0.12",
   "release": {
     "branches": [
       "+([0-9])?(.{+([0-9]),x}).x",
@@ -116,6 +117,5 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.39.0",
     "vite": "^7.1.0"
-  },
-  "version": "2.0.12"
+  }
 }
