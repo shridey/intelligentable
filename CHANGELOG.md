@@ -1,3 +1,10 @@
+## [2.0.16](https://github.com/shridey/intelligentable/compare/v2.0.15...v2.0.16) (2025-08-16)
+
+
+### Bug Fixes
+
+* **search:** defaultSearch is now search and its placeholder can be manipulated by search.placeholder prop ([7ed383a](https://github.com/shridey/intelligentable/commit/7ed383ae20511740d95ab979c9e1ebcd49a8eca3))
+
 ## [2.0.15](https://github.com/shridey/intelligentable/compare/v2.0.14...v2.0.15) (2025-08-16)
 
 
