@@ -93,7 +93,7 @@ export default App;
 | `dataSource`              | `readonly AnyObject[] (AntD's)`                                                                               | Table data                                                                                                              |
 | `defaultSummary`          | `{ enable?: boolean; fixed?: "top" \| "bottom" }`                                                             | Enables built-in summary row                                                                                            |
 | `enableLegends`           | `boolean`                                                                                                     | Show legend box                                                                                                         |
-| `search`  | `{ enable: boolean; placeholder: string; onSearch?: (searchText, row, columns) => boolean }`                                       | Built-in search or custom logic                                                                                         |
+| `search`                  | `{ enable: boolean; placeholder: string; onSearch?: (searchText, row, columns) => boolean }`                  | Built-in search or custom logic                                                                                         |
 | `tableExport`             | `{ enable: boolean; exportFileName?: string; pdfFontOptions?: IntelligentTableExportButtonPDFFontOptionsType` | Enables export options                                                                                                  |
 | `dataTransform`           | `(ctx: { pipeline }) => AnyObject[]`                                                                          | Chain data transformations                                                                                              |
 | `tableThemeConfig`        | `IntelligentTableThemeConfigType (Table Theme from AntD's ThemeConfig)`                                       | Theme customization (legend, searchBox, exportButton etc)                                                               |
@@ -154,10 +154,7 @@ const dataSource = [
   { key: 2, id: 102, name: "Bob", joiningDate: "2021-11-03", salary: 60000 },
 ];
 
-<IntelligentTable
-  columns={columns}
-  dataSource={dataSource}
-/>
+<IntelligentTable columns={columns} dataSource={dataSource} />;
 ```
 
 ### Overriding Smart Sorting with a Custom Sorter
@@ -175,7 +172,6 @@ const columns: IntelligentTableColumnType[] = [
   // ...other columns
 ];
 ```
-
 
 ---
 
@@ -251,21 +247,20 @@ Enable via `tableExport` prop:
 import NotoSans from "@/assets/fonts/NotoSans-Regular.ttf";
 
 <IntelligentTable
-  tableExport={
-    {
-      enable: true,
-      exportFileName: "Report",
-      pdfFontOptions: { // Optional
-        fontUrl: NotoSans,
-        fontName: "NotoSans",
-        fontFileName: "NotoSans-Regular.ttf",
-        fontStyles: ["normal", "bold"],
-        fallbackFont: "helvetiva" // Default
-      }
-    }
-  }
+  tableExport={{
+    enable: true,
+    exportFileName: "Report",
+    pdfFontOptions: {
+      // Optional
+      fontUrl: NotoSans,
+      fontName: "NotoSans",
+      fontFileName: "NotoSans-Regular.ttf",
+      fontStyles: ["normal", "bold"],
+      fallbackFont: "helvetiva", // Default
+    },
+  }}
   // ...
-/>
+/>;
 ```
 
 ---
