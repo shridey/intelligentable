@@ -292,7 +292,7 @@ Customize table appearance via `tableThemeConfig`:
 <IntelligentTable
   tableThemeConfig={{
     legends: { fontSize: "14px", backgroundColor: "#f0f0f0" },
-    searchBox: { colorText: "#333", placeholderText: "Type to search..." },
+    searchBox: { colorText: "#333" },
     exportButton: { defaultBg: "#1890ff", defaultColor: "#fff" },
     defaultSummaryRow: { backgroundColor: "#fafafa", fontWeight: "bold" },
   }}
@@ -304,7 +304,7 @@ Customize table appearance via `tableThemeConfig`:
 
 ## 📜 License
 
-[MIT](https://github.com/shridey/intelligentable/blob/main/LICENSE) © @shridey | Made with ❤️ in Mumbai 🇮🇳
+[MIT](https://github.com/shridey/intelligentable/blob/main/LICENSE) | Made with ❤️ in Mumbai 🇮🇳
 
 ---
 
