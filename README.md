@@ -319,6 +319,4 @@ Stay tuned for updates and new components.
 
 ---
 
-> _Questions or suggestions?_
-> [Start a discussion](https://github.com/shridey/intelligentable/discussions)
-> [Create an issue](https://github.com/shridey/intelligentable/issues)
+> _Wanna Talk:_ [Start a discussion](https://github.com/shridey/intelligentable/discussions) or [Create an issue](https://github.com/shridey/intelligentable/issues)
