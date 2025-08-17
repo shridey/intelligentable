@@ -12,7 +12,7 @@ npm install @shridey/intelligentable
 
 ## Changelog
 
-See the [CHANGELOG](./CHANGELOG.md) for all updates and release notes.
+See the [CHANGELOG](https://github.com/shridey/intelligentable/blob/main/CHANGELOG.md) for all updates and release notes.
 
 ---
 
@@ -309,7 +309,7 @@ Customize table appearance via `tableThemeConfig`:
 
 ## 📜 License
 
-MIT © @shridey | Made with ❤️ in Mumbai 🇮🇳
+[MIT](https://github.com/shridey/intelligentable/blob/main/LICENSE) © @shridey | Made with ❤️ in Mumbai 🇮🇳
 
 ---
 
@@ -319,5 +319,6 @@ Stay tuned for updates and new components.
 
 ---
 
-> _Questions or suggestions?_  
-> Create an issue or start a discussion on [GitHub](https://github.com/shridey/intelligentable/issues)
+> _Questions or suggestions?_
+> [Start a discussion](https://github.com/shridey/intelligentable/discussions)
+> [Create an issue](https://github.com/shridey/intelligentable/issues)
