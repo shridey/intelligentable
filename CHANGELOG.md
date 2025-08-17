@@ -1,3 +1,10 @@
+## [2.0.17](https://github.com/shridey/intelligentable/compare/v2.0.16...v2.0.17) (2025-08-17)
+
+
+### Bug Fixes
+
+* attribute semantic-release-bot contributions to [@shridey](https://github.com/shridey) ([8ffc1ff](https://github.com/shridey/intelligentable/commit/8ffc1ff8f212354c54d91e4762b0dbb3421ba4cf))
+
 ## [2.0.16](https://github.com/shridey/intelligentable/compare/v2.0.15...v2.0.16) (2025-08-16)
 
 
