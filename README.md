@@ -1,6 +1,6 @@
 # Intelligentable by @shridey
 
-> Intelligentable is a highly customizable, fully-types, performant, and feature-rich React component library built on top of handpicked industry-level production-grade UI Components for modern web applications.
+> Intelligentable is a highly customizable, fully-typed, performant, and feature-rich React component library built on top of handpicked industry-level production-grade UI Components for modern web applications.
 
 ---
 
