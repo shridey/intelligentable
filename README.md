@@ -1,5 +1,40 @@
 # Intelligentable by @shridey
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/@shridey/intelligentable">
+    <img src="https://img.shields.io/npm/v/@shridey/intelligentable?style=for-the-badge&logo=npm&label=Version" />
+  </a>
+  <a href="https://www.npmjs.com/package/@shridey/intelligentable">
+    <img src="https://img.shields.io/npm/dm/@shridey/intelligentable?style=for-the-badge&logo=npm&label=Monthly%20Downloads" />
+  </a>
+  <a href="https://www.npmjs.com/package/@shridey/intelligentable">
+    <img src="https://img.shields.io/npm/dt/@shridey/intelligentable?style=for-the-badge&logo=npm&label=Total%20Downloads" />
+  </a>
+</p>
+<p align="center">
+  <a href="https://github.com/shridey/intelligentable/blob/main/LICENSE">
+    <img src="https://img.shields.io/npm/l/@shridey/intelligentable?style=for-the-badge&logo=github&label=License" />
+  </a>
+  <a href="https://github.com/shridey/intelligentable/pulls">
+    <img src="https://img.shields.io/github/issues-pr/shridey/intelligentable?style=for-the-badge&logo=github&label=Pull%20Requests" />
+  </a>
+  <a href="https://github.com/shridey/intelligentable/issues">
+    <img src="https://img.shields.io/github/issues/shridey/intelligentable?style=for-the-badge&logo=github&label=Issues" />
+  </a>
+  <a href="https://github.com/shridey/intelligentable/stargazers">
+    <img src="https://img.shields.io/github/stars/shridey/intelligentable?style=for-the-badge&logo=github&label=Stars" />
+  </a>
+  <a href="https://github.com/shridey/intelligentable/network/members">
+    <img src="https://img.shields.io/github/forks/shridey/intelligentable?style=for-the-badge&logo=github&label=Forks" />
+  </a>
+  <a href="https://github.com/shridey/intelligentable/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/shridey/intelligentable?style=for-the-badge&logo=github&label=Contributors" />
+  </a>
+  <a href="https://github.com/shridey/intelligentable/commits/main">
+    <img src="https://img.shields.io/github/last-commit/shridey/intelligentable?style=for-the-badge&logo=github&label=Last%20Commit" />
+  </a>
+</p>
+
 > Intelligentable is a highly customizable, fully-typed, performant, and feature-rich React component library built on top of handpicked industry-level production-grade UI Components for modern web applications.
 
 ---
