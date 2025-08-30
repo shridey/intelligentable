@@ -1,3 +1,10 @@
+## [2.0.18](https://github.com/shridey/intelligentable/compare/v2.0.17...v2.0.18) (2025-08-30)
+
+
+### Bug Fixes
+
+* **readme:** add filters usage info ([b7fb43d](https://github.com/shridey/intelligentable/commit/b7fb43d8ac3be4eb0bfb042d5d31b8a42d0692b9))
+
 ## [2.0.17](https://github.com/shridey/intelligentable/compare/v2.0.16...v2.0.17) (2025-08-17)
 
 
