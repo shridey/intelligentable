@@ -809,6 +809,12 @@ function App() {
           title: "Grade",
           key: "grade",
           dataIndex: "grade",
+          filters: [
+            {
+              text: "5-12",
+              value: "5-12",
+            },
+          ],
           ellipsis: true,
           sorter: (a, b) => {
             const gA = a.grade === "K" ? 0 : parseInt(a.grade, 10);

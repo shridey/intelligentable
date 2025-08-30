@@ -63,6 +63,7 @@ IntelligentTable is a Modern React TypeScript Table Component built on top of An
 - 📊 **Automatic Summary Row** – Built-in support for sum, average, count, max, and min operations per column.
 - 🔍 **Universal Search** – Out-of-the-box search across all columns, or plug in your own custom logic.
 - 🧩 **Composable Data Transformation Pipeline** – Chain and compose data transformation steps before rendering.
+- 🔎 **Smart Numeric Filtering** – Out-of-the-box filter support for numbers, ids, percentages, and currencies. Supports exact match (42) and range queries (10-50).
 - 🎨 **Legends** – Dynamic legend generation based on column color rules, with customizable styles.
 - 📤 **Export** – Export table data to Excel (XLSX), PDF, JSON, CSV, and TSV formats.
 - 🏷️ **Dynamic Cell Coloring** – Apply colors to cells based on value thresholds, string matches, or regex.
@@ -314,6 +315,41 @@ Chain multiple data transformation steps before rendering:
     ])
   }
   // ...
+/>
+```
+
+---
+
+## Numeric Value Filtering
+
+```tsx
+<IntelligentTable
+  columns={[
+    {
+      title: "ID",
+      dataIndex: "id",
+      filters: [
+        { text: "1", value: "1" },
+        { text: "10–50", value: "10-50" },
+      ],
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      filters: [
+        { text: "100", value: "100" },
+        { text: "500–1000", value: "500-1000" },
+      ],
+      // No need to write onFilters
+    },
+  ]}
+  dataSource={[
+    // On activating column filter, below values will be
+    { id: 1, price: 200 }, // Filtered
+    { id: 25, price: 800 }, // Visible
+    { id: 60, price: 1200 }, // Filtered
+    // Based on rules defined in filters above
+  ]}
 />
 ```
 
