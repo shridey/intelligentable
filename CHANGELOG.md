@@ -1,3 +1,10 @@
+## [2.0.19](https://github.com/shridey/intelligentable/compare/v2.0.18...v2.0.19) (2025-10-02)
+
+
+### Bug Fixes
+
+* remove mailmap ([0b8f386](https://github.com/shridey/intelligentable/commit/0b8f386be906369355b88a7db8d7a0be703ccaf5))
+
 ## [2.0.18](https://github.com/shridey/intelligentable/compare/v2.0.17...v2.0.18) (2025-08-30)
 
 
