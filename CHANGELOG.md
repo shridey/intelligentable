@@ -1,3 +1,16 @@
+# [2.1.0](https://github.com/shridey/intelligentable/compare/v2.0.19...v2.1.0) (2025-12-26)
+
+
+### Bug Fixes
+
+* table types ([d38d823](https://github.com/shridey/intelligentable/commit/d38d8230ddd92fffaa09c0144bd0318dba3b7f17))
+* update node version in workflow ([b99c8aa](https://github.com/shridey/intelligentable/commit/b99c8aa3e955ea0bd8b81459ab2c5d369646ff28))
+
+
+### Features
+
+* streamline support for react 19 ([f0cd031](https://github.com/shridey/intelligentable/commit/f0cd031fa0d50fd09e26feb5ec9c3265a339876b))
+
 ## [2.0.19](https://github.com/shridey/intelligentable/compare/v2.0.18...v2.0.19) (2025-10-02)
 
 
