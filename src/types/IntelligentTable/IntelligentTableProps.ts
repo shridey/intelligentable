@@ -1,6 +1,6 @@
 import type { TableProps } from "antd";
 import type { AnyObject } from "antd/es/_util/type";
-import type { SummaryProps } from "rc-table/lib/Footer/Summary";
+import type { SummaryProps } from "@rc-component/table/lib/Footer/Summary";
 import type { IntelligentTableColumnType } from "./IntelligentTableColumnType";
 import type { IntelligentTableThemeConfigType } from "./IntelligentTableThemeConfigType";
 import type { IntelligentTableExportButtonPDFFontOptionsType } from "./IntelligentTableExportButtonPDFFontOptionsType";
